@@ -8,7 +8,7 @@ export default function Hero() {
       {/* 배경 이미지 */}
       <div className="absolute inset-0">
         <Image
-          src="https://images.unsplash.com/photo-1490750967868-88aa4486c946?w=1600&q=80"
+          src="/img/hero.svg"
           alt="파스텔 톤 꽃다발"
           fill
           priority

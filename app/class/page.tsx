@@ -9,19 +9,19 @@ const classes = [
     name: "원데이 클래스",
     price: 55000,
     desc: "처음이어도 괜찮아요. 2시간 동안 나만의 꽃다발 한 다발을 완성해요.",
-    img: "https://images.unsplash.com/photo-1558997519-83ea9252edf8?w=900&q=80",
+    img: "/img/gallery-1.svg",
   },
   {
     name: "정규 4주 과정",
     price: 200000,
     desc: "꽃 손질부터 컬러 배합, 다양한 디자인까지 차근차근 배우는 과정.",
-    img: "https://images.unsplash.com/photo-1503453363464-743ee9335aea?w=900&q=80",
+    img: "/img/gallery-4.svg",
   },
   {
     name: "단체·기업 클래스",
     price: 0,
     desc: "친구 모임, 회사 워크숍을 위한 맞춤형 클래스 (인원·예산별 견적)",
-    img: "https://images.unsplash.com/photo-1487530811176-3780de880c2d?w=900&q=80",
+    img: "/img/gallery-7.svg",
   },
 ];
 

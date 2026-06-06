@@ -3,16 +3,7 @@ import { site } from "@/lib/config";
 import Reveal from "./Reveal";
 
 // 인스타 감성 갤러리 (피드 느낌의 정사각 그리드)
-const photos = [
-  "https://images.unsplash.com/photo-1526047932273-341f2a7631f9?w=600&q=80",
-  "https://images.unsplash.com/photo-1502977249166-824b3a8a4d6d?w=600&q=80",
-  "https://images.unsplash.com/photo-1468327768560-75b778cbb551?w=600&q=80",
-  "https://images.unsplash.com/photo-1455659817273-f96807779a8a?w=600&q=80",
-  "https://images.unsplash.com/photo-1469259943454-aa100abba749?w=600&q=80",
-  "https://images.unsplash.com/photo-1457089328109-e5d9bd499191?w=600&q=80",
-  "https://images.unsplash.com/photo-1508610048659-a06b669e3321?w=600&q=80",
-  "https://images.unsplash.com/photo-1519378058457-4c29a0a2efac?w=600&q=80",
-];
+const photos = Array.from({ length: 8 }, (_, i) => `/img/gallery-${i + 1}.svg`);
 
 export default function InstaGallery() {
   return (

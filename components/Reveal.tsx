@@ -18,6 +18,13 @@ export default function Reveal({
   useEffect(() => {
     const el = ref.current;
     if (!el) return;
+
+    // IntersectionObserver 미지원 환경: 즉시 노출
+    if (typeof IntersectionObserver === "undefined") {
+      setShown(true);
+      return;
+    }
+
     const io = new IntersectionObserver(
       ([entry]) => {
         if (entry.isIntersecting) {
@@ -28,7 +35,14 @@ export default function Reveal({
       { threshold: 0.12 }
     );
     io.observe(el);
-    return () => io.disconnect();
+
+    // 안전장치: 스크롤하지 않아도 일정 시간 후에는 반드시 노출 (콘텐츠가 영구히 숨겨지지 않도록)
+    const fallback = setTimeout(() => setShown(true), 1500);
+
+    return () => {
+      io.disconnect();
+      clearTimeout(fallback);
+    };
   }, []);
 
   return (

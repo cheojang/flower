@@ -86,7 +86,7 @@ export default async function HomePage() {
             </div>
             <div className="relative aspect-[5/4] overflow-hidden rounded-3xl shadow-soft">
               <Image
-                src="https://images.unsplash.com/photo-1457089328109-e5d9bd499191?w=1000&q=80"
+                src="/img/banner-sub.svg"
                 alt="정기구독 꽃다발"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
