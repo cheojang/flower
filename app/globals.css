@@ -1,0 +1,57 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply bg-cream text-ink antialiased;
+  }
+  ::selection {
+    @apply bg-rose/40 text-ink;
+  }
+}
+
+@layer components {
+  .container-soft {
+    @apply mx-auto w-full max-w-6xl px-5 sm:px-8;
+  }
+  .btn-primary {
+    @apply inline-flex items-center justify-center gap-2 rounded-full bg-rose-deep px-6 py-3
+           text-sm font-medium text-white shadow-soft transition
+           hover:bg-rose-deep/90 active:scale-[0.98];
+  }
+  .btn-ghost {
+    @apply inline-flex items-center justify-center gap-2 rounded-full border border-rose-deep/40
+           px-6 py-3 text-sm font-medium text-ink transition hover:bg-rose-light/60;
+  }
+  .section-title {
+    @apply font-serif text-2xl text-ink sm:text-3xl;
+  }
+  .label-chip {
+    @apply inline-block rounded-full bg-sage-light px-3 py-1 text-xs font-medium text-sage-deep;
+  }
+}
+
+/* 스크롤 인 애니메이션 (JS에서 .in-view 토글) */
+.reveal {
+  opacity: 0;
+  transform: translateY(24px);
+  transition:
+    opacity 0.7s ease-out,
+    transform 0.7s ease-out;
+}
+.reveal.in-view {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* 스크롤바 감성 */
+::-webkit-scrollbar {
+  width: 10px;
+}
+::-webkit-scrollbar-thumb {
+  @apply rounded-full bg-rose/60;
+}
