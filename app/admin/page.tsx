@@ -41,12 +41,23 @@ export default async function AdminDashboard() {
         ))}
       </div>
 
-      <div className="mt-8 flex flex-wrap gap-3">
-        <Link href="/admin/products" className="btn-primary">
-          상품·가격 관리하기
+      <div className="mt-8 rounded-3xl bg-sage-light/60 p-6">
+        <h2 className="font-serif text-lg text-ink">✨ 사이트 편집 모드 (추천)</h2>
+        <p className="mt-1 text-sm text-ink-soft">
+          실제 홈페이지 화면 그대로, 사진·가격을 직접 눌러 수정하고 ＋／－ 버튼으로 상품·메뉴를
+          추가·삭제할 수 있어요.
+        </p>
+        <Link href="/admin/editor" className="btn-primary mt-4">
+          사이트 편집 시작하기
+        </Link>
+      </div>
+
+      <div className="mt-6 flex flex-wrap gap-3">
+        <Link href="/admin/products" className="btn-ghost">
+          상품 목록(표) 보기
         </Link>
         <Link href="/admin/categories" className="btn-ghost">
-          카테고리 관리하기
+          카테고리 관리
         </Link>
       </div>
     </div>

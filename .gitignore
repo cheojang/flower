@@ -25,3 +25,7 @@ prisma/migrations/
 npm-debug.log*
 .vercel
 *.tsbuildinfo
+
+# 관리자 업로드 이미지
+public/uploads/*
+!public/uploads/.gitkeep

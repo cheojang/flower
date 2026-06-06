@@ -5,7 +5,8 @@ import { usePathname, useRouter } from "next/navigation";
 
 const links = [
   { href: "/admin", label: "대시보드" },
-  { href: "/admin/products", label: "상품·가격" },
+  { href: "/admin/editor", label: "✨ 사이트 편집" },
+  { href: "/admin/products", label: "상품 목록" },
   { href: "/admin/categories", label: "카테고리" },
 ];
 
