@@ -42,7 +42,6 @@ export const navLinks = [
   { href: "/shop", label: "상품" },
   { href: "/subscription", label: "정기구독" },
   { href: "/class", label: "플라워 클래스" },
-  { href: "/lesson", label: "꽃꽂이 강습" },
   { href: "/about", label: "브랜드 스토리" },
   { href: "/contact", label: "오시는 길" },
 ] as const;
