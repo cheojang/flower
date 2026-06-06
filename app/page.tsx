@@ -1,14 +1,20 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/db";
+import { resolveSeason, type Season } from "@/lib/config";
 import Hero from "@/components/Hero";
 import InstaGallery from "@/components/InstaGallery";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
+import SeasonalAnimation from "@/components/SeasonalAnimation";
 
 export const dynamic = "force-dynamic";
 
-export default async function HomePage() {
+export default async function HomePage({
+  searchParams,
+}: {
+  searchParams: { season?: string };
+}) {
   const [featured, categories] = await Promise.all([
     prisma.product.findMany({
       where: { isFeatured: true },
@@ -19,8 +25,15 @@ export default async function HomePage() {
     prisma.category.findMany({ orderBy: { order: "asc" } }),
   ]);
 
+  // ?season=spring|summer|autumn|winter 로 미리보기 가능 (없으면 설정값/자동)
+  const valid: Season[] = ["spring", "summer", "autumn", "winter"];
+  const season = valid.includes(searchParams.season as Season)
+    ? (searchParams.season as Season)
+    : resolveSeason();
+
   return (
     <>
+      <SeasonalAnimation season={season} />
       <Hero />
 
       {/* 카테고리 바로가기 */}

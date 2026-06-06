@@ -42,10 +42,31 @@ export const navLinks = [
   { href: "/shop", label: "상품" },
   { href: "/subscription", label: "정기구독" },
   { href: "/class", label: "플라워 클래스" },
+  { href: "/lesson", label: "꽃꽂이 강습" },
   { href: "/about", label: "브랜드 스토리" },
   { href: "/contact", label: "오시는 길" },
 ] as const;
 
 export function formatPrice(won: number): string {
   return won.toLocaleString("ko-KR") + "원";
+}
+
+// ───────────────────────────────────────────────
+// 랜딩페이지 계절 애니메이션
+//   "auto"  → 현재 날짜(월)에 맞춰 자동 (봄 벚꽃 / 여름 꽃잎 / 가을 은행잎 / 겨울 눈)
+//   특정 계절로 고정하고 싶으면 "spring" | "summer" | "autumn" | "winter" 로 변경
+// ───────────────────────────────────────────────
+export type Season = "spring" | "summer" | "autumn" | "winter";
+export const seasonSetting: "auto" | Season = "auto";
+
+export function getCurrentSeason(): Season {
+  const m = new Date().getMonth() + 1; // 1~12
+  if (m >= 3 && m <= 5) return "spring";
+  if (m >= 6 && m <= 8) return "summer";
+  if (m >= 9 && m <= 11) return "autumn";
+  return "winter";
+}
+
+export function resolveSeason(): Season {
+  return seasonSetting === "auto" ? getCurrentSeason() : seasonSetting;
 }

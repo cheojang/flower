@@ -48,6 +48,29 @@
   transform: translateY(0);
 }
 
+/* 계절 애니메이션 (벚꽃/꽃잎/은행잎/눈 떨어지기) */
+@keyframes fall-y {
+  0% {
+    transform: translateY(-12vh);
+  }
+  100% {
+    transform: translateY(112vh);
+  }
+}
+@keyframes sway-x {
+  0% {
+    transform: translateX(-16px) rotate(-25deg);
+  }
+  100% {
+    transform: translateX(16px) rotate(25deg);
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .season-layer {
+    display: none;
+  }
+}
+
 /* 스크롤바 감성 */
 ::-webkit-scrollbar {
   width: 10px;
