@@ -3,8 +3,10 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  // 로컬 개발: SQLite (별도 DB 설치 불필요)
+  // 배포(Vercel): vercel-build 단계에서 자동으로 postgresql + DATABASE_URL 로 전환됩니다.
+  provider = "sqlite"
+  url      = "file:./dev.db"
 }
 
 // ─────────────────────────────────────────────
