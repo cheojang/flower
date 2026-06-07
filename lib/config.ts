@@ -31,7 +31,7 @@ export const site = {
   consult: {
     kakaoChannel: "https://pf.kakao.com/_XXXXX/chat", // ← 교체
     naverTalk: "https://talk.naver.com/ct/XXXXX", // ← 교체
-    naverPlace: "https://map.naver.com/", // ← 교체
+    naverPlace: "https://map.naver.com/v5/search/%EB%82%9C%EA%B3%BC%EB%9C%A8%EB%9D%BD", // 난과뜨락 검색
   },
 
   // 소셜
