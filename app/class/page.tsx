@@ -19,13 +19,6 @@ const classes = [
     sub: onedayItems,
   },
   {
-    name: "테라리움 클래스",
-    price: 45000,
-    desc: "유리 용기 안에 이끼·소품·식물로 작은 세계를 만드는 감성 클래스예요.",
-    img: "/img/gallery-4.svg",
-    sub: null,
-  },
-  {
     name: "단체·기업 클래스",
     price: 0,
     desc: "친구 모임, 회사 워크숍을 위한 맞춤형 클래스 (인원·예산별 견적)",
