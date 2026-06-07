@@ -32,8 +32,8 @@ export default function Hero() {
           <Link href="/shop" className="btn-primary">
             꽃 보러가기
           </Link>
-          <Link href="/subscription" className="btn-ghost">
-            정기구독 알아보기
+          <Link href="/class" className="btn-ghost">
+            플라워 클래스 보기
           </Link>
         </div>
       </div>

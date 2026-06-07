@@ -82,25 +82,25 @@ export default async function HomePage({
         )}
       </section>
 
-      {/* 정기구독 티저 */}
+      {/* 플라워 클래스 티저 */}
       <section className="container-soft py-16">
         <Reveal>
           <div className="grid items-center gap-8 overflow-hidden rounded-4xl bg-sage-light p-8 sm:p-12 lg:grid-cols-2">
             <div>
-              <p className="label-chip bg-white/70">Subscription</p>
-              <h2 className="section-title mt-3">2주에 한 번, 꽃이 오는 즐거움</h2>
+              <p className="label-chip bg-white/70">Flower Class</p>
+              <h2 className="section-title mt-3">꽃과 가까워지는 시간</h2>
               <p className="mt-4 leading-relaxed text-ink-soft">
-                매 시즌 가장 예쁜 꽃으로 정성껏 구성해 정기 배송해 드려요. 부담 없는
-                구독으로 일상에 작은 위로를 더하세요.
+                꽃꽂이, 꽃다발, 테라리움까지. LANN의 작업실에서 향기로운 꽃과 함께하는
+                따뜻한 원데이 클래스를 만나보세요.
               </p>
-              <Link href="/subscription" className="btn-primary mt-6">
-                구독 시작하기
+              <Link href="/class" className="btn-primary mt-6">
+                클래스 보러가기
               </Link>
             </div>
             <div className="relative aspect-[5/4] overflow-hidden rounded-3xl shadow-soft">
               <Image
                 src="/img/banner-sub.svg"
-                alt="정기구독 꽃다발"
+                alt="플라워 클래스"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"
                 className="object-cover"
