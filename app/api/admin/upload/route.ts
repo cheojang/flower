@@ -28,8 +28,20 @@ export async function POST(req: Request) {
   const ext = (blob.name.split(".").pop() || "png").toLowerCase().replace(/[^a-z0-9]/g, "");
   const fileName = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.${ext}`;
   const dir = path.join(process.cwd(), "public", "uploads");
-  await mkdir(dir, { recursive: true });
-  await writeFile(path.join(dir, fileName), bytes);
+
+  try {
+    await mkdir(dir, { recursive: true });
+    await writeFile(path.join(dir, fileName), bytes);
+  } catch {
+    // Vercel 등 서버리스: 파일시스템이 읽기 전용 → 업로드 불가
+    return NextResponse.json(
+      {
+        error:
+          "이 서버에서는 파일 업로드가 지원되지 않아요. 이미지 주소(URL)를 붙여넣어 주세요.",
+      },
+      { status: 501 }
+    );
+  }
 
   return NextResponse.json({ url: `/uploads/${fileName}` });
 }

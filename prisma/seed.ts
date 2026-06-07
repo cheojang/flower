@@ -98,6 +98,14 @@ const products: Array<{
 ];
 
 async function main() {
+  // 이미 데이터가 있으면 건너뜀 (재배포 시 관리자가 수정한 내용 보호)
+  // 강제로 다시 채우려면 SEED_FORCE=1 환경변수와 함께 실행하세요.
+  const existing = await prisma.category.count();
+  if (existing > 0 && !process.env.SEED_FORCE) {
+    console.log(`ℹ️ 이미 카테고리 ${existing}개가 있어 시드를 건너뜁니다.`);
+    return;
+  }
+
   console.log("🌱 시드 시작...");
 
   // 카테고리 upsert
