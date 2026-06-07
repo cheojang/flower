@@ -118,8 +118,8 @@ export default async function HomePage({
             “꽃은 가장 다정한 안부 인사라고 믿어요.”
           </h2>
           <p className="mx-auto mt-4 max-w-xl leading-relaxed text-ink-soft">
-            온실은 따뜻한 햇살이 머무는 작은 꽃집입니다. 화려하지 않아도 오래 곁에
-            두고 싶은, 그런 꽃을 만듭니다.
+            특별한 날의 화려함뿐만 아니라, 평범한 매일을 빛내줄 자연을 제안합니다.
+            당신의 뜰에서 시작되는 작고 따뜻한 이야기.
           </p>
           <Link href="/about" className="btn-ghost mt-6">
             브랜드 이야기 보기

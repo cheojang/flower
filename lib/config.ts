@@ -7,12 +7,12 @@
 
 export const site = {
   // 브랜드
-  name: "LANN",
-  nameEn: "",
-  tagline: "당신의 계절을 피우다",
+  name: "LANTLE",
+  nameEn: "란뜰",
+  tagline: "당신의 일상에 피어나는 작은 정원, 란뜰",
   description:
-    "LANN은 따뜻한 햇살이 머무는 작은 꽃집입니다. 계절마다 가장 예쁜 꽃으로 당신의 하루를 피워드려요.",
-  instagramHandle: "@lann.flower",
+    "뜰에서 꺾어 온 듯한 싱그러움을 당신의 오늘에 선물합니다. 꽃 한 송이가 주는 위로, 잎사귀가 주는 평온함.",
+  instagramHandle: "@lantle.flower",
   storeName: "난과뜨락",
 
   // 영업 정보

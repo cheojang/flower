@@ -18,7 +18,7 @@ const CONFIG: Record<
   { count: number; sizeMin: number; sizeMax: number; durMin: number; durMax: number; opacity: number }
 > = {
   spring: { count: 55, sizeMin: 14, sizeMax: 28, durMin: 5, durMax: 11, opacity: 0.95 }, // 벚꽃
-  summer: { count: 40, sizeMin: 12, sizeMax: 24, durMin: 7, durMax: 13, opacity: 0.85 }, // 꽃잎
+  summer: { count: 60, sizeMin: 16, sizeMax: 32, durMin: 4, durMax: 9, opacity: 0.95 },  // 수국 꽃잎
   autumn: { count: 48, sizeMin: 16, sizeMax: 32, durMin: 6, durMax: 12, opacity: 0.95 }, // 은행잎
   winter: { count: 80, sizeMin: 6, sizeMax: 16, durMin: 6, durMax: 13, opacity: 0.95 }, // 눈
 };
@@ -46,21 +46,31 @@ function Shape({ season, variant }: { season: Season; variant: number }) {
       </svg>
     );
   }
-  // 봄 벚꽃 / 여름 꽃잎
-  const colors =
-    season === "spring"
-      ? ["#F6A8C6", "#EF93B6", "#F9C2D8"] // 벚꽃 핑크 (선명하게)
-      : ["#C9B8E6", "#B9D2E0", "#DAC6E6"]; // 여름 시원한 라벤더·하늘
+  if (season === "summer") {
+    // 수국 꽃잎 — 파스텔 라벤더·핑크·퍼플 4장 꽃잎
+    const colors = ["#DDD6FE", "#FBCFE8", "#E9D5FF", "#FDE8F0", "#C7D2FE"];
+    const center = ["#FEF9C3", "#FFF0F5", "#F5F3FF"];
+    const c = colors[variant % colors.length];
+    const cc = center[variant % center.length];
+    return (
+      <svg viewBox="0 0 24 24" width="100%" height="100%">
+        <ellipse cx="12" cy="6"  rx="5" ry="7" fill={c} opacity="0.95" />
+        <ellipse cx="12" cy="18" rx="5" ry="7" fill={c} opacity="0.95" />
+        <ellipse cx="6"  cy="12" rx="7" ry="5" fill={c} opacity="0.9" />
+        <ellipse cx="18" cy="12" rx="7" ry="5" fill={c} opacity="0.9" />
+        <circle cx="12" cy="12" r="3.2" fill={cc} opacity="0.98" />
+      </svg>
+    );
+  }
+  // 봄 벚꽃
+  const colors = ["#F6A8C6", "#EF93B6", "#F9C2D8"];
   return (
     <svg viewBox="0 0 20 20" width="100%" height="100%">
       <path
         d="M10 2 C13 5 13 11 10 17 C7 11 7 5 10 2 Z"
         fill={colors[variant % colors.length]}
       />
-      {/* 벚꽃 꽃잎 끝 살짝 갈라짐 */}
-      {season === "spring" && (
-        <path d="M10 17 L8.5 14.5 L11.5 14.5 Z" fill="#FBFAFB" opacity="0.6" />
-      )}
+      <path d="M10 17 L8.5 14.5 L11.5 14.5 Z" fill="#FBFAFB" opacity="0.6" />
     </svg>
   );
 }

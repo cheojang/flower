@@ -22,11 +22,11 @@ export default function Hero() {
       <div className="container-soft relative flex min-h-[78vh] flex-col items-center justify-center py-24 text-center">
         <p className="label-chip animate-fade-up">{site.instagramHandle}</p>
         <h1 className="mt-5 font-serif text-4xl leading-tight text-ink animate-fade-up sm:text-6xl">
-          {site.tagline}
+          당신의 일상에 피어나는<br />작은 정원, 란뜰
         </h1>
-        <p className="mt-5 max-w-md text-base leading-relaxed text-ink-soft animate-fade-up sm:text-lg">
-          계절마다 가장 예쁜 꽃으로
-          <br className="sm:hidden" /> 당신의 하루를 피워드릴게요.
+        <p className="mt-5 max-w-lg text-base leading-relaxed text-ink-soft animate-fade-up sm:text-lg">
+          뜰에서 꺾어 온 듯한 싱그러움을 당신의 오늘에 선물합니다.<br className="hidden sm:block" />
+          꽃 한 송이가 주는 위로, 잎사귀가 주는 평온함.
         </p>
         <div className="mt-8 flex flex-col gap-3 animate-fade-up sm:flex-row">
           <Link href="/shop" className="btn-primary">

@@ -14,14 +14,14 @@ export default function AboutPage() {
 
       <Reveal className="mx-auto mt-10 max-w-2xl text-center leading-loose text-ink-soft">
         <p>
-          LANN은 따뜻한 햇살이 머무는 작은 꽃집입니다.
+          란뜰(LANTLE)은 뜰에서 꺾어 온 듯한 싱그러움을 일상에 전하는 꽃집입니다.
           <br />
-          우리는 화려함보다 ‘오래 곁에 두고 싶은’ 다정함을 담고 싶었어요.
+          화려함보다 오래 곁에 두고 싶은, 그런 꽃과 식물을 고릅니다.
         </p>
         <p className="mt-6">
-          계절이 바뀔 때마다 가장 좋은 꽃을 골라
+          꽃 한 송이가 주는 위로, 잎사귀가 주는 평온함.
           <br />
-          당신의 하루에 작은 위로와 설렘을 더합니다.
+          특별한 날뿐 아니라 평범한 매일을 빛내줄 자연을 제안합니다.
         </p>
       </Reveal>
 
