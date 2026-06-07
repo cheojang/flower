@@ -14,7 +14,7 @@ export default function AboutPage() {
 
       <Reveal className="mx-auto mt-10 max-w-2xl text-center leading-loose text-ink-soft">
         <p>
-          {site.name}은 따뜻한 햇살이 머무는 작은 꽃집입니다.
+          LANN은 따뜻한 햇살이 머무는 작은 꽃집입니다.
           <br />
           우리는 화려함보다 ‘오래 곁에 두고 싶은’ 다정함을 담고 싶었어요.
         </p>

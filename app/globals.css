@@ -59,10 +59,10 @@
 }
 @keyframes sway-x {
   0% {
-    transform: translateX(-16px) rotate(-25deg);
+    transform: translateX(-28px) rotate(-35deg);
   }
   100% {
-    transform: translateX(16px) rotate(25deg);
+    transform: translateX(28px) rotate(35deg);
   }
 }
 @media (prefers-reduced-motion: reduce) {

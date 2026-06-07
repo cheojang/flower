@@ -17,10 +17,10 @@ const CONFIG: Record<
   Season,
   { count: number; sizeMin: number; sizeMax: number; durMin: number; durMax: number; opacity: number }
 > = {
-  spring: { count: 26, sizeMin: 12, sizeMax: 22, durMin: 7, durMax: 13, opacity: 0.85 }, // 벚꽃
-  summer: { count: 20, sizeMin: 10, sizeMax: 18, durMin: 9, durMax: 16, opacity: 0.7 }, // 꽃잎
-  autumn: { count: 24, sizeMin: 14, sizeMax: 26, durMin: 8, durMax: 14, opacity: 0.85 }, // 은행잎
-  winter: { count: 40, sizeMin: 6, sizeMax: 14, durMin: 8, durMax: 16, opacity: 0.9 }, // 눈
+  spring: { count: 55, sizeMin: 14, sizeMax: 28, durMin: 5, durMax: 11, opacity: 0.95 }, // 벚꽃
+  summer: { count: 40, sizeMin: 12, sizeMax: 24, durMin: 7, durMax: 13, opacity: 0.85 }, // 꽃잎
+  autumn: { count: 48, sizeMin: 16, sizeMax: 32, durMin: 6, durMax: 12, opacity: 0.95 }, // 은행잎
+  winter: { count: 80, sizeMin: 6, sizeMax: 16, durMin: 6, durMax: 13, opacity: 0.95 }, // 눈
 };
 
 // 계절별 입자 모양 (SVG)
@@ -75,7 +75,7 @@ export default function SeasonalAnimation({ season }: { season: Season }) {
       size: c.sizeMin + Math.random() * (c.sizeMax - c.sizeMin),
       dur: c.durMin + Math.random() * (c.durMax - c.durMin),
       delay: -Math.random() * c.durMax, // 음수 딜레이로 처음부터 흩날리는 상태
-      sway: 2 + Math.random() * 3,
+      sway: 1.5 + Math.random() * 2.5,
       opacity: c.opacity * (0.6 + Math.random() * 0.4),
       variant: Math.floor(Math.random() * 3),
     }));

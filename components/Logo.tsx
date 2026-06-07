@@ -38,11 +38,8 @@ export default function Logo({
         <path d="M24 34c-3-1-5.5-.5-7 1.5 2.4 1.2 5 .8 7-1.5Z" fill="#C7D2C0" />
       </svg>
       {showText && (
-        <span className="font-serif text-xl leading-none tracking-tight text-ink">
+        <span className="font-serif text-2xl leading-none tracking-widest text-ink">
           {site.name}
-          <span className="ml-1 align-text-top text-[10px] font-sans font-medium tracking-[0.2em] text-ink-soft">
-            {site.nameEn}
-          </span>
         </span>
       )}
     </span>

@@ -7,9 +7,9 @@ const categories = [
   { name: "꽃다발", slug: "bouquet", order: 1 },
   { name: "꽃바구니", slug: "basket", order: 2 },
   { name: "화분", slug: "plant", order: 3 },
-  { name: "개업화환", slug: "congrats", order: 4 },
-  { name: "결혼식·장례식 화환", slug: "wreath", order: 5 },
-  { name: "정기구독", slug: "subscription", order: 6 },
+  { name: "테라리움", slug: "terrarium", order: 4 },
+  { name: "개업화환", slug: "congrats", order: 5 },
+  { name: "결혼식·장례식 화환", slug: "wreath", order: 6 },
 ];
 
 // 샘플 상품 (이미지는 /public/img 의 로컬 파스텔 플레이스홀더 — 관리자에서 실제 사진 URL로 교체)
@@ -86,14 +86,14 @@ const products: Array<{
     slug: "wreath",
   },
   {
-    name: "온실 정기구독 · 2주에 한 번",
-    description: "매 시즌 가장 예쁜 꽃으로 구성해 2주마다 정기 배송해 드려요.",
-    price: 39000,
+    name: "감성 테라리움 · 미니 정원",
+    description: "유리 용기 안에 이끼와 소품으로 꾸민 작은 정원이에요. 오래 곁에 두기 좋아요.",
+    price: 38000,
     imageUrl: "/img/product-8.svg",
-    badge: "구독",
+    badge: "신상",
     isFeatured: true,
     order: 8,
-    slug: "subscription",
+    slug: "terrarium",
   },
 ];
 
