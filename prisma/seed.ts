@@ -100,7 +100,11 @@ const products: Array<{
 async function main() {
   console.log("🌱 카테고리 동기화 중...");
 
-  // 카테고리는 항상 upsert — 새 카테고리(테라리움 등)를 재배포 시 자동 추가
+  // 목록에 없는 카테고리(정기구독 등) 삭제 — 상품도 cascade 삭제됨
+  const validSlugs = categories.map((c) => c.slug);
+  await prisma.category.deleteMany({ where: { slug: { notIn: validSlugs } } });
+
+  // 카테고리 upsert — 신규 추가 및 순서/이름 갱신
   const slugToId: Record<string, string> = {};
   for (const c of categories) {
     const cat = await prisma.category.upsert({
