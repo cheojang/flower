@@ -7,6 +7,9 @@ PC 없이 휴대폰 브라우저만으로 할 수 있어요. 순서대로 따라
 
 ---
 
+> 💡 **이미 Supabase DB가 있다면** 1단계(Neon)를 건너뛰고 맨 아래
+> [부록: Supabase 사용하기](#부록--supabase-db-사용하기) 를 보세요. 더 빠릅니다.
+
 ## 1단계 · 무료 데이터베이스 만들기 (Neon)
 
 1. 휴대폰 브라우저로 **https://neon.tech** 접속 → **Sign up** → *Continue with GitHub* (제일 간편)
@@ -65,3 +68,26 @@ PC 없이 휴대폰 브라우저만으로 할 수 있어요. 순서대로 따라
 - **상품을 바꿨는데 안 보여요** → 잠시 후 새로고침. 데이터는 Neon에 안전하게 저장됩니다.
 - **다시 배포해도 내 상품이 지워지지 않나요?** → 네, 안전합니다. 시드는 처음 한 번만
   실행되고 이후 배포에서는 기존 데이터를 건드리지 않습니다.
+
+---
+
+## 부록 · Supabase DB 사용하기
+
+이미 Supabase 프로젝트가 있다면 Neon 대신 그대로 쓰면 됩니다. (Supabase도 PostgreSQL)
+
+1. Supabase 대시보드 → **Settings(⚙️) → Database → Connection string**
+2. **"Session pooler"** 탭의 문자열을 복사
+   - Prisma 배포(테이블 생성)에 가장 안전하고 IPv4에서도 잘 됩니다.
+3. 문자열의 `[YOUR-PASSWORD]` 를 실제 DB 비밀번호로 교체, 끝에 `?sslmode=require` 가
+   없으면 추가
+4. 이 값을 2단계 Vercel 환경변수 **`DATABASE_URL`** 에 넣고 Deploy
+
+> ⚠️ 만약 배포 빌드가 DB 연결에서 실패하면, 같은 화면의 **"Direct connection"** 문자열로
+> 바꿔서 다시 배포하세요. (Direct는 테이블 생성은 잘 되지만 동시접속이 많으면 한계가 있어요)
+
+### 계정 위임(인수인계) 팁
+- 가장 깔끔한 방법: **최종 운영자가 직접 GitHub·Supabase·Vercel에 가입**해서 처음부터
+  본인 소유로 만드는 것. (나중에 이전하는 것보다 쉬움)
+- 이미 만든 걸 넘길 때: 세 서비스 모두 멤버 초대/소유권 이전 가능
+  (Vercel Team, Supabase Organization, GitHub 협업자/이전).
+- DB를 Supabase 하나로 통합하면 운영자가 관리할 계정이 줄어 위임이 쉬워집니다.
