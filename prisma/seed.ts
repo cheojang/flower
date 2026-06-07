@@ -98,17 +98,9 @@ const products: Array<{
 ];
 
 async function main() {
-  // 이미 데이터가 있으면 건너뜀 (재배포 시 관리자가 수정한 내용 보호)
-  // 강제로 다시 채우려면 SEED_FORCE=1 환경변수와 함께 실행하세요.
-  const existing = await prisma.category.count();
-  if (existing > 0 && !process.env.SEED_FORCE) {
-    console.log(`ℹ️ 이미 카테고리 ${existing}개가 있어 시드를 건너뜁니다.`);
-    return;
-  }
+  console.log("🌱 카테고리 동기화 중...");
 
-  console.log("🌱 시드 시작...");
-
-  // 카테고리 upsert
+  // 카테고리는 항상 upsert — 새 카테고리(테라리움 등)를 재배포 시 자동 추가
   const slugToId: Record<string, string> = {};
   for (const c of categories) {
     const cat = await prisma.category.upsert({
@@ -118,10 +110,21 @@ async function main() {
     });
     slugToId[c.slug] = cat.id;
   }
+  console.log(`✅ 카테고리 ${categories.length}개 동기화 완료`);
 
-  // 기존 상품 비우고 다시 생성 (시드 반복 안전)
+  // 상품은 비어 있을 때만 초기 시드 (관리자가 수정한 내용 보호)
+  // 강제로 다시 채우려면 SEED_FORCE=1 환경변수와 함께 실행하세요.
+  const productCount = await prisma.product.count();
+  if (productCount > 0 && !process.env.SEED_FORCE) {
+    console.log(`ℹ️ 상품 ${productCount}개가 이미 있어 상품 시드를 건너뜁니다.`);
+    return;
+  }
+
+  console.log("🌱 상품 초기 데이터 삽입 중...");
   await prisma.product.deleteMany();
   for (const p of products) {
+    const catId = slugToId[p.slug];
+    if (!catId) continue;
     await prisma.product.create({
       data: {
         name: p.name,
@@ -131,12 +134,12 @@ async function main() {
         badge: p.badge,
         isFeatured: p.isFeatured ?? false,
         order: p.order,
-        categoryId: slugToId[p.slug],
+        categoryId: catId,
       },
     });
   }
 
-  console.log(`✅ 카테고리 ${categories.length}개, 상품 ${products.length}개 생성 완료`);
+  console.log(`✅ 상품 ${products.length}개 생성 완료`);
 }
 
 main()
