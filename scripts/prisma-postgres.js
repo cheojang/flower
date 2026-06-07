@@ -8,7 +8,10 @@ let s = fs.readFileSync(file, "utf8");
 
 s = s
   .replace('provider = "sqlite"', 'provider = "postgresql"')
-  .replace('url      = "file:./dev.db"', "url      = env(\"DATABASE_URL\")");
+  .replace(
+    'url      = "file:./dev.db"',
+    'url      = env("DATABASE_URL")\n  directUrl = env("DIRECT_URL")'
+  );
 
 fs.writeFileSync(file, s);
-console.log("✅ Prisma datasource → postgresql (env DATABASE_URL)");
+console.log("✅ Prisma datasource → postgresql (DATABASE_URL + DIRECT_URL)");
