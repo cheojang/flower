@@ -1,5 +1,5 @@
-const goldGradient = {
-  background: "linear-gradient(135deg, #B8903A 0%, #E8C96A 35%, #F5DFA0 50%, #C9A84C 70%, #A87830 100%)",
+const pastelGradient = {
+  background: "linear-gradient(115deg, #C99AAE 0%, #D9A7A7 28%, #C8A8D4 55%, #A8BFA0 82%, #9DB89A 100%)",
   WebkitBackgroundClip: "text" as const,
   WebkitTextFillColor: "transparent" as const,
   backgroundClip: "text" as const,
@@ -18,13 +18,13 @@ export default function Logo({
         <>
           <span
             className="font-serif text-[26px] tracking-[0.25em] font-normal"
-            style={goldGradient}
+            style={pastelGradient}
           >
             LANTLE
           </span>
           <span
             className="mt-0.5 text-[8px] tracking-[0.45em] font-sans font-light"
-            style={goldGradient}
+            style={pastelGradient}
           >
             FLORAL STUDIO
           </span>
