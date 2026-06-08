@@ -1,26 +1,16 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import type { Season } from "@/lib/config";
-
-type Particle = {
-  left: number;
-  size: number;
-  dur: number;
-  delay: number;
-  sway: number;
-  opacity: number;
-  variant: number;
-};
 
 const CONFIG: Record<
   Season,
-  { count: number; sizeMin: number; sizeMax: number; durMin: number; durMax: number; opacity: number }
+  { count: number; sizeMin: number; sizeMax: number; opacity: number }
 > = {
-  spring: { count: 55, sizeMin: 14, sizeMax: 28, durMin: 5, durMax: 11, opacity: 0.95 }, // 벚꽃
-  summer: { count: 60, sizeMin: 16, sizeMax: 32, durMin: 4, durMax: 9, opacity: 0.95 },  // 수국 꽃잎
-  autumn: { count: 48, sizeMin: 16, sizeMax: 32, durMin: 6, durMax: 12, opacity: 0.95 }, // 은행잎
-  winter: { count: 80, sizeMin: 6, sizeMax: 16, durMin: 6, durMax: 13, opacity: 0.95 }, // 눈
+  spring: { count: 50, sizeMin: 14, sizeMax: 28, opacity: 0.95 }, // 벚꽃
+  summer: { count: 55, sizeMin: 16, sizeMax: 32, opacity: 0.95 }, // 수국 꽃잎
+  autumn: { count: 44, sizeMin: 16, sizeMax: 32, opacity: 0.95 }, // 은행잎
+  winter: { count: 75, sizeMin: 6, sizeMax: 16, opacity: 0.95 }, // 눈
 };
 
 // 계절별 입자 모양 (SVG)
@@ -34,7 +24,6 @@ function Shape({ season, variant }: { season: Season; variant: number }) {
     );
   }
   if (season === "autumn") {
-    // 은행잎 (부채꼴)
     const colors = ["#F2D98C", "#E8C45C", "#EAB94B"];
     return (
       <svg viewBox="0 0 20 22" width="100%" height="100%">
@@ -47,16 +36,15 @@ function Shape({ season, variant }: { season: Season; variant: number }) {
     );
   }
   if (season === "summer") {
-    // 수국 꽃잎 — 파스텔 라벤더·핑크·퍼플 4장 꽃잎
     const colors = ["#DDD6FE", "#FBCFE8", "#E9D5FF", "#FDE8F0", "#C7D2FE"];
     const center = ["#FEF9C3", "#FFF0F5", "#F5F3FF"];
     const c = colors[variant % colors.length];
     const cc = center[variant % center.length];
     return (
       <svg viewBox="0 0 24 24" width="100%" height="100%">
-        <ellipse cx="12" cy="6"  rx="5" ry="7" fill={c} opacity="0.95" />
+        <ellipse cx="12" cy="6" rx="5" ry="7" fill={c} opacity="0.95" />
         <ellipse cx="12" cy="18" rx="5" ry="7" fill={c} opacity="0.95" />
-        <ellipse cx="6"  cy="12" rx="7" ry="5" fill={c} opacity="0.9" />
+        <ellipse cx="6" cy="12" rx="7" ry="5" fill={c} opacity="0.9" />
         <ellipse cx="18" cy="12" rx="7" ry="5" fill={c} opacity="0.9" />
         <circle cx="12" cy="12" r="3.2" fill={cc} opacity="0.98" />
       </svg>
@@ -75,57 +63,164 @@ function Shape({ season, variant }: { season: Season; variant: number }) {
   );
 }
 
-export default function SeasonalAnimation({ season }: { season: Season }) {
-  const [particles, setParticles] = useState<Particle[]>([]);
+type Phys = { x: number; y: number; vx: number; vy: number; rot: number; vr: number; g: number };
 
-  useEffect(() => {
+export default function SeasonalAnimation({ season }: { season: Season }) {
+  const containerRef = useRef<HTMLDivElement | null>(null);
+  const itemRefs = useRef<(HTMLSpanElement | null)[]>([]);
+
+  // 입자 메타데이터(크기/모양/흔들림 위상) — 계절 바뀔 때만 재생성
+  const meta = useMemo(() => {
     const c = CONFIG[season];
-    const arr: Particle[] = Array.from({ length: c.count }, () => ({
-      left: Math.random() * 100,
+    return Array.from({ length: c.count }, () => ({
       size: c.sizeMin + Math.random() * (c.sizeMax - c.sizeMin),
-      dur: c.durMin + Math.random() * (c.durMax - c.durMin),
-      delay: -Math.random() * c.durMax, // 음수 딜레이로 처음부터 흩날리는 상태
-      sway: 1.5 + Math.random() * 2.5,
-      opacity: c.opacity * (0.6 + Math.random() * 0.4),
+      opacity: c.opacity * (0.65 + Math.random() * 0.35),
       variant: Math.floor(Math.random() * 3),
+      swayPhase: Math.random() * Math.PI * 2,
+      swaySpeed: 0.6 + Math.random() * 0.9,
     }));
-    setParticles(arr);
   }, [season]);
 
-  if (particles.length === 0) return null;
+  useEffect(() => {
+    // 모션 최소화 설정 시 동작 안 함
+    if (
+      typeof window !== "undefined" &&
+      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
+    ) {
+      return;
+    }
+
+    const container = containerRef.current;
+    if (!container) return;
+
+    let w = container.clientWidth;
+    let h = container.clientHeight || 1;
+
+    // 물리 상태 초기화 (화면 전체에 흩뿌림)
+    const phys: Phys[] = meta.map((m) => ({
+      x: Math.random() * w,
+      y: Math.random() * h,
+      vx: (Math.random() - 0.5) * 0.4,
+      vy: 0.4 + Math.random() * 0.8,
+      rot: Math.random() * 360,
+      vr: (Math.random() - 0.5) * 2,
+      // gravity 가중치(작을수록 가볍게 천천히)
+      g: 0.6 + m.size / 36,
+    }));
+
+    const mouse = { x: 0, y: 0, inside: false, last: -9999 };
+
+    const onMove = (e: PointerEvent) => {
+      const rect = container.getBoundingClientRect();
+      const x = e.clientX - rect.left;
+      const y = e.clientY - rect.top;
+      mouse.x = x;
+      mouse.y = y;
+      mouse.inside = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
+      mouse.last = performance.now();
+    };
+    const onResize = () => {
+      w = container.clientWidth;
+      h = container.clientHeight || 1;
+    };
+
+    window.addEventListener("pointermove", onMove, { passive: true });
+    window.addEventListener("resize", onResize);
+
+    const R = 200; // 마우스 영향 반경(px)
+    let raf = 0;
+
+    const tick = () => {
+      const now = performance.now();
+      const t = now / 1000;
+      // 마우스가 최근에 움직였고 영역 안에 있을 때만 끌어당김
+      const active = mouse.inside && now - mouse.last < 260;
+
+      for (let i = 0; i < phys.length; i++) {
+        const p = phys[i];
+        const m = meta[i];
+
+        // 기본: 중력 + 좌우 흔들림
+        p.vy += 0.03 * p.g;
+        p.vx += Math.sin(t * m.swaySpeed + m.swayPhase) * 0.02;
+
+        // 마우스 끌어당김 (가까울수록 강하게, 근처에선 감속해 모임=붙음)
+        if (active) {
+          const dx = mouse.x - p.x;
+          const dy = mouse.y - p.y;
+          const d = Math.hypot(dx, dy) || 1;
+          if (d < R) {
+            const f = (1 - d / R) * 1.25;
+            p.vx += (dx / d) * f;
+            p.vy += (dy / d) * f;
+            if (d < 70) {
+              // 커서 근처: 강한 감속으로 자연스럽게 달라붙음
+              p.vx *= 0.82;
+              p.vy *= 0.82;
+            }
+          }
+        }
+
+        // 감쇠
+        p.vx *= 0.96;
+        p.vy *= 0.985;
+
+        p.x += p.vx;
+        p.y += p.vy;
+        p.rot += p.vr + p.vx * 1.5;
+
+        // 화면 벗어나면 위에서 다시 등장
+        if (p.y > h + 40) {
+          p.y = -40;
+          p.x = Math.random() * w;
+          p.vx = (Math.random() - 0.5) * 0.4;
+          p.vy = 0.4 + Math.random() * 0.6;
+        }
+        if (p.x < -50) p.x = w + 40;
+        else if (p.x > w + 50) p.x = -40;
+
+        const el = itemRefs.current[i];
+        if (el) {
+          el.style.transform = `translate3d(${p.x}px, ${p.y}px, 0) rotate(${p.rot}deg)`;
+        }
+      }
+      raf = requestAnimationFrame(tick);
+    };
+    raf = requestAnimationFrame(tick);
+
+    return () => {
+      cancelAnimationFrame(raf);
+      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("resize", onResize);
+    };
+  }, [meta]);
 
   return (
     <div
+      ref={containerRef}
       className="season-layer pointer-events-none absolute inset-0 z-[15] overflow-hidden"
       aria-hidden="true"
       style={{
-        // 아래로 갈수록 자연스럽게 사라지도록 마스크 적용
         maskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 88%)",
         WebkitMaskImage:
           "linear-gradient(to bottom, black 0%, black 55%, transparent 88%)",
       }}
     >
-      {particles.map((p, i) => (
+      {meta.map((m, i) => (
         <span
-          key={i}
-          className="absolute top-0"
+          key={`${season}-${i}`}
+          ref={(el) => {
+            itemRefs.current[i] = el;
+          }}
+          className="absolute left-0 top-0 will-change-transform"
           style={{
-            left: `${p.left}%`,
-            width: p.size,
-            height: p.size,
-            animation: `fall-y ${p.dur}s linear ${p.delay}s infinite`,
+            width: m.size,
+            height: m.size,
+            opacity: m.opacity,
+            filter: "drop-shadow(0 1px 1.5px rgba(92,74,69,0.12))",
           }}
         >
-          <span
-            className="block h-full w-full"
-            style={{
-              opacity: p.opacity,
-              filter: "drop-shadow(0 1px 1.5px rgba(92,74,69,0.12))",
-              animation: `sway-x ${p.sway}s ease-in-out ${p.delay}s infinite alternate`,
-            }}
-          >
-            <Shape season={season} variant={p.variant} />
-          </span>
+          <Shape season={season} variant={m.variant} />
         </span>
       ))}
     </div>
