@@ -22,7 +22,7 @@ export default async function Header() {
               <li key={l.href}>
                 <Link
                   href={l.href}
-                  className="rounded-full px-4 py-2 text-sm text-ink transition hover:bg-rose-light/60"
+                  className="rounded-full px-4 py-2 font-serif text-[17px] text-ink transition hover:bg-rose-light/60"
                 >
                   {l.label}
                 </Link>

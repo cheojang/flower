@@ -52,7 +52,7 @@ export default function MobileNav({
                   <Link
                     href={l.href}
                     onClick={() => setOpen(false)}
-                    className="block rounded-2xl px-4 py-3.5 text-base text-ink hover:bg-rose-light/60"
+                    className="block rounded-2xl px-4 py-3.5 font-serif text-lg text-ink hover:bg-rose-light/60"
                   >
                     {l.label}
                   </Link>
