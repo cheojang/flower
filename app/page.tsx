@@ -45,18 +45,19 @@ export default async function HomePage({
           <p className="label-chip">Shop</p>
           <h2 className="section-title mt-3">무엇을 찾고 계신가요?</h2>
         </Reveal>
-        <div className="flex flex-wrap justify-center gap-3">
-          {categories.map((c, i) => (
-            <Reveal key={c.id} delay={i * 40}>
+        <Reveal>
+          <div className="flex flex-wrap justify-center gap-3">
+            {categories.map((c) => (
               <Link
+                key={c.id}
                 href={`/shop?category=${c.slug}`}
                 className="rounded-full border border-rose-deep/30 bg-white/60 px-5 py-2.5 text-sm text-ink transition hover:bg-rose-light"
               >
                 {c.name}
               </Link>
-            </Reveal>
-          ))}
-        </div>
+            ))}
+          </div>
+        </Reveal>
       </section>
 
       {/* 추천 상품 */}
