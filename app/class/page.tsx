@@ -36,7 +36,7 @@ export default function ClassPage() {
           꽃과 가까워지는 시간
         </h1>
         <p className="mx-auto mt-4 max-w-md leading-relaxed text-ink-soft">
-          LANN의 작업실에서 향기로운 꽃과 함께하는 따뜻한 클래스를 열고 있어요.
+          LANTLE의 작업실에서 향기로운 꽃과 함께하는 따뜻한 클래스를 열고 있어요.
         </p>
       </Reveal>
 

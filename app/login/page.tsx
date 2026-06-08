@@ -35,7 +35,7 @@ export default async function LoginPage() {
         </div>
         <h1 className="mt-6 font-serif text-2xl text-ink">반가워요 🌷</h1>
         <p className="mt-2 text-sm text-ink-soft">
-          간편하게 로그인하고 온실의 소식을 받아보세요.
+          간편하게 로그인하고 란뜰의 소식을 받아보세요.
         </p>
 
         <div className="mt-8 space-y-3">

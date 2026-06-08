@@ -26,7 +26,7 @@ export default async function AdminDashboard() {
     <div className="container-soft py-10">
       <AdminNav />
       <h1 className="font-serif text-2xl text-ink">대시보드</h1>
-      <p className="mt-1 text-sm text-ink-soft">온실 상품과 메뉴를 한곳에서 관리하세요.</p>
+      <p className="mt-1 text-sm text-ink-soft">란뜰 상품과 메뉴를 한곳에서 관리하세요.</p>
 
       <div className="mt-8 grid gap-4 sm:grid-cols-3">
         {stats.map((s) => (

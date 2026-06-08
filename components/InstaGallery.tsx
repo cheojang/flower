@@ -12,7 +12,7 @@ export default function InstaGallery() {
         <p className="label-chip">Instagram</p>
         <h2 className="section-title mt-3">{site.instagramHandle}</h2>
         <p className="mt-2 text-sm text-ink-soft">
-          온실의 일상과 오늘의 꽃을 인스타그램에서 만나보세요
+          란뜰의 일상과 오늘의 꽃을 인스타그램에서 만나보세요
         </p>
       </Reveal>
 
@@ -27,7 +27,7 @@ export default function InstaGallery() {
             >
               <Image
                 src={src}
-                alt="온실 인스타그램 사진"
+                alt="란뜰 인스타그램 사진"
                 fill
                 sizes="(max-width: 640px) 50vw, 25vw"
                 className="object-cover transition duration-500 group-hover:scale-110"

@@ -11,7 +11,7 @@ export default async function Header() {
   return (
     <header className="sticky top-0 z-30 border-b border-rose-light/70 bg-cream/85 backdrop-blur">
       <div className="container-soft flex h-16 items-center justify-between">
-        <Link href="/" aria-label="온실 홈">
+        <Link href="/" aria-label="란뜰 홈">
           <Logo />
         </Link>
 

@@ -93,7 +93,7 @@ export default async function HomePage({
               <p className="label-chip bg-white/70">Flower Class</p>
               <h2 className="section-title mt-3">꽃과 가까워지는 시간</h2>
               <p className="mt-4 leading-relaxed text-ink-soft">
-                꽃꽂이, 꽃다발, 테라리움까지. LANN의 작업실에서 향기로운 꽃과 함께하는
+                꽃꽂이, 꽃다발, 테라리움까지. LANTLE의 작업실에서 향기로운 꽃과 함께하는
                 따뜻한 원데이 클래스를 만나보세요.
               </p>
               <Link href="/class" className="btn-primary mt-6">

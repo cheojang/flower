@@ -27,7 +27,7 @@ export default function AboutPage() {
         <div className="relative aspect-[16/9] overflow-hidden rounded-4xl shadow-soft">
           <Image
             src="/img/banner-about.svg"
-            alt="온실 작업실"
+            alt="란뜰 작업실"
             fill
             sizes="100vw"
             className="object-cover"
