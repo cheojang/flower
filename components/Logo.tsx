@@ -1,5 +1,5 @@
 const pastelGradient = {
-  background: "linear-gradient(115deg, #C99AAE 0%, #D9A7A7 28%, #C8A8D4 55%, #A8BFA0 82%, #9DB89A 100%)",
+  background: "linear-gradient(115deg, #B06A85 0%, #C77E8C 26%, #A877C4 54%, #7FA86E 82%, #6E9A66 100%)",
   WebkitBackgroundClip: "text" as const,
   WebkitTextFillColor: "transparent" as const,
   backgroundClip: "text" as const,
@@ -17,14 +17,13 @@ export default function Logo({
       {showText && (
         <>
           <span
-            className="font-serif text-[26px] tracking-[0.25em] font-normal"
+            className="font-serif text-[28px] font-bold tracking-[0.28em]"
             style={pastelGradient}
           >
             LANTLE
           </span>
           <span
-            className="mt-0.5 text-[8px] tracking-[0.45em] font-sans font-light"
-            style={pastelGradient}
+            className="mt-1 text-[9px] font-sans font-semibold tracking-[0.48em] text-sage-deep"
           >
             FLORAL STUDIO
           </span>

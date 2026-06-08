@@ -8,7 +8,7 @@ export default function Footer() {
       <div className="container-soft grid gap-10 py-12 sm:grid-cols-2 lg:grid-cols-4">
         <div className="sm:col-span-2 lg:col-span-1">
           <Logo />
-          <p className="mt-4 max-w-xs text-[15px] leading-relaxed text-ink-soft">
+          <p className="mt-4 max-w-xs font-serif text-[15px] leading-relaxed text-ink-soft">
             {site.description}
           </p>
           <p className="mt-4 text-[15px] text-ink-soft">{site.instagramHandle}</p>

@@ -12,15 +12,13 @@ export default function AboutPage() {
         <h1 className="mt-4 font-serif text-4xl text-ink sm:text-5xl">{site.tagline}</h1>
       </Reveal>
 
-      <Reveal className="mx-auto mt-10 max-w-2xl text-center leading-loose text-ink-soft">
+      <Reveal className="mx-auto mt-10 max-w-2xl text-center font-serif text-lg leading-loose text-ink-soft">
         <p>
           란뜰(LANTLE)은 뜰에서 꺾어 온 듯한 싱그러움을 일상에 전하는 꽃집입니다.
           <br />
           화려함보다 오래 곁에 두고 싶은, 그런 꽃과 식물을 고릅니다.
         </p>
         <p className="mt-6">
-          꽃 한 송이가 주는 위로, 잎사귀가 주는 평온함.
-          <br />
           특별한 날뿐 아니라 평범한 매일을 빛내줄 자연을 제안합니다.
         </p>
       </Reveal>

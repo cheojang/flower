@@ -11,7 +11,7 @@ export const site = {
   nameEn: "란뜰",
   tagline: "당신의 일상에 피어나는 작은 정원, 란뜰",
   description:
-    "뜰에서 꺾어 온 듯한 싱그러움을 당신의 오늘에 선물합니다. 꽃 한 송이가 주는 위로, 잎사귀가 주는 평온함.",
+    "뜰에서 꺾어 온 듯한 싱그러움을 당신의 오늘에 선물합니다.",
   instagramHandle: "@lantle.flower",
   storeName: "난과뜨락",
 
