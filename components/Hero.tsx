@@ -24,9 +24,8 @@ export default function Hero() {
         <h1 className="mt-5 font-serif text-4xl leading-tight text-ink animate-fade-up sm:text-6xl">
           당신의 일상에 피어나는<br />작은 정원, 란뜰
         </h1>
-        <p className="mt-5 max-w-lg text-base leading-relaxed text-ink-soft animate-fade-up sm:text-lg">
-          뜰에서 꺾어 온 듯한 싱그러움을 당신의 오늘에 선물합니다.<br className="hidden sm:block" />
-          꽃 한 송이가 주는 위로, 잎사귀가 주는 평온함.
+        <p className="mt-5 max-w-lg font-serif text-lg leading-relaxed text-ink-soft animate-fade-up sm:text-xl">
+          뜰에서 꺾어 온 듯한 싱그러움을 당신의 오늘에 선물합니다.
         </p>
         <div className="mt-8 flex flex-col gap-3 animate-fade-up sm:flex-row">
           <Link href="/shop" className="btn-primary">
