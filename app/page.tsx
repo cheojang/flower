@@ -33,8 +33,11 @@ export default async function HomePage({
 
   return (
     <>
-      <SeasonalAnimation season={season} />
-      <Hero />
+      {/* 계절 애니메이션은 히어로(상단) 영역에만 머물고 아래로 사라집니다 */}
+      <div className="relative">
+        <SeasonalAnimation season={season} />
+        <Hero />
+      </div>
 
       {/* 카테고리 바로가기 */}
       <section className="container-soft py-14">

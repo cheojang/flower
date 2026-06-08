@@ -96,8 +96,14 @@ export default function SeasonalAnimation({ season }: { season: Season }) {
 
   return (
     <div
-      className="season-layer pointer-events-none fixed inset-0 z-[15] overflow-hidden"
+      className="season-layer pointer-events-none absolute inset-0 z-[15] overflow-hidden"
       aria-hidden="true"
+      style={{
+        // 아래로 갈수록 자연스럽게 사라지도록 마스크 적용
+        maskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 88%)",
+        WebkitMaskImage:
+          "linear-gradient(to bottom, black 0%, black 55%, transparent 88%)",
+      }}
     >
       {particles.map((p, i) => (
         <span
