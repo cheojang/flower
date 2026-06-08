@@ -21,6 +21,16 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "이름, 가격, 카테고리는 필수입니다." }, { status: 400 });
   }
 
+  // 순서(order)를 지정하지 않으면 전체 상품의 마지막 순번 다음으로 자동 부여
+  let resolvedOrder = Number(order);
+  if (!Number.isFinite(resolvedOrder) || resolvedOrder <= 0) {
+    const last = await prisma.product.findFirst({
+      orderBy: { order: "desc" },
+      select: { order: true },
+    });
+    resolvedOrder = (last?.order ?? 0) + 1;
+  }
+
   const product = await prisma.product.create({
     data: {
       name,
@@ -29,7 +39,7 @@ export async function POST(req: Request) {
       imageUrl: imageUrl ?? "",
       badge: badge || null,
       isFeatured: Boolean(isFeatured),
-      order: Number(order) || 0,
+      order: resolvedOrder,
       categoryId,
     },
   });

@@ -127,7 +127,7 @@ export default function SeasonalAnimation({ season }: { season: Season }) {
     window.addEventListener("pointermove", onMove, { passive: true });
     window.addEventListener("resize", onResize);
 
-    const R = 200; // 마우스 영향 반경(px)
+    const R = 280; // 마우스 영향 반경(px)
     let raf = 0;
 
     const tick = () => {
@@ -150,7 +150,7 @@ export default function SeasonalAnimation({ season }: { season: Season }) {
           const dy = mouse.y - p.y;
           const d = Math.hypot(dx, dy) || 1;
           if (d < R) {
-            const f = (1 - d / R) * 1.25;
+            const f = (1 - d / R) * 0.95;
             p.vx += (dx / d) * f;
             p.vy += (dy / d) * f;
             if (d < 70) {

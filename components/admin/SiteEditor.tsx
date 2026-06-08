@@ -52,7 +52,6 @@ export default function SiteEditor({ initial }: { initial: Category[] }) {
   }
 
   async function addProduct(catId: string) {
-    const count = cats.find((c) => c.id === catId)?.products.length ?? 0;
     const res = await fetch("/api/admin/products", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -61,7 +60,7 @@ export default function SiteEditor({ initial }: { initial: Category[] }) {
         price: 0,
         imageUrl: "",
         categoryId: catId,
-        order: count + 1,
+        // order는 서버에서 전역 마지막 순번+1로 자동 부여
       }),
     });
     if (!res.ok) return notify("추가 실패");
