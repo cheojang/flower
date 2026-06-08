@@ -40,12 +40,12 @@ export default function ClassPage() {
         </p>
       </Reveal>
 
-      <div className="mt-12 grid gap-6 lg:grid-cols-3">
+      <div className="mt-12 flex flex-wrap justify-center gap-6">
         {classes.map((c, i) => (
-          <Reveal key={c.name} delay={i * 70}>
+          <Reveal key={c.name} delay={i * 70} className="w-full sm:w-[340px]">
             <div className="flex h-full flex-col overflow-hidden rounded-4xl border border-rose-light bg-white/60 shadow-soft">
               <div className="relative aspect-[4/3]">
-                <Image src={c.img} alt={c.name} fill sizes="(max-width:1024px) 100vw, 33vw" className="object-cover" />
+                <Image src={c.img} alt={c.name} fill sizes="(max-width:640px) 100vw, 340px" className="object-cover" />
               </div>
               <div className="flex flex-1 flex-col p-6">
                 <h3 className="font-serif text-xl text-ink">{c.name}</h3>
