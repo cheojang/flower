@@ -19,7 +19,10 @@ export default function Hero() {
         <div className="absolute inset-0 bg-rose/10" />
       </div>
 
-      <div className="container-soft relative flex min-h-[78vh] flex-col items-center justify-center py-24 text-center">
+      <div
+        className="container-soft relative flex flex-col items-center justify-center py-24 text-center"
+        style={{ minHeight: "85vh" }}
+      >
         <p className="label-chip animate-fade-up">{site.instagramHandle}</p>
         <h1 className="mt-5 font-serif text-4xl leading-tight text-ink animate-fade-up sm:text-6xl">
           당신의 일상에 피어나는<br />작은 정원, 란뜰
