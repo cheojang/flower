@@ -82,14 +82,6 @@ export default function SeasonalAnimation({ season }: { season: Season }) {
   }, [season]);
 
   useEffect(() => {
-    // 모션 최소화 설정 시 동작 안 함
-    if (
-      typeof window !== "undefined" &&
-      window.matchMedia?.("(prefers-reduced-motion: reduce)").matches
-    ) {
-      return;
-    }
-
     const container = containerRef.current;
     if (!container) return;
 
