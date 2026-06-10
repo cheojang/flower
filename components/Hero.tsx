@@ -21,8 +21,8 @@ export default function Hero({ season }: { season: Season }) {
         <div className="absolute inset-0 bg-rose/10" />
       </div>
 
-      {/* 계절 애니메이션 (진단용 임시 비활성화 — 버튼 탭 원인 격리) */}
-      {/* <SeasonalAnimation season={season} /> */}
+      {/* 계절 애니메이션 (모바일=CSS, PC=JS / 배경 위·콘텐츠 아래) */}
+      <SeasonalAnimation season={season} />
 
       {/* 콘텐츠 (최상위 z-10 — 버튼이 항상 우선 조작됨) */}
       <div
