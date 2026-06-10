@@ -36,7 +36,10 @@ export default function Hero({ season }: { season: Season }) {
         <p className="mt-5 max-w-lg font-serif text-lg leading-relaxed text-ink-soft animate-fade-up sm:text-xl">
           뜰에서 꺾어 온 듯한 싱그러움을 당신의 오늘에 선물합니다.
         </p>
-        <div className="mt-8 flex flex-col gap-3 animate-fade-up sm:flex-row">
+        <div
+          className="relative z-20 mt-8 flex flex-col gap-3 animate-fade-up sm:flex-row"
+          style={{ pointerEvents: "auto", touchAction: "manipulation" }}
+        >
           <Link href="/shop" className="btn-primary">
             꽃 보러가기
           </Link>
