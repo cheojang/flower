@@ -1,11 +1,13 @@
 import Link from "next/link";
 import Image from "next/image";
 import { site } from "@/lib/config";
+import type { Season } from "@/lib/config";
+import SeasonalAnimation from "@/components/SeasonalAnimation";
 
-export default function Hero() {
+export default function Hero({ season }: { season: Season }) {
   return (
     <section className="relative overflow-hidden">
-      {/* 배경 이미지 */}
+      {/* 배경 이미지 (가장 아래) */}
       <div className="absolute inset-0">
         <Image
           src="/img/hero.svg"
@@ -19,8 +21,12 @@ export default function Hero() {
         <div className="absolute inset-0 bg-rose/10" />
       </div>
 
+      {/* 계절 애니메이션 (배경 위, 콘텐츠 아래 — 버튼을 가리지 않음) */}
+      <SeasonalAnimation season={season} />
+
+      {/* 콘텐츠 (최상위 z-10 — 버튼이 항상 우선 조작됨) */}
       <div
-        className="container-soft relative flex flex-col items-center justify-center py-24 text-center"
+        className="container-soft relative z-10 flex flex-col items-center justify-center py-24 text-center"
         style={{ minHeight: "85vh" }}
       >
         <p className="label-chip animate-fade-up">{site.instagramHandle}</p>

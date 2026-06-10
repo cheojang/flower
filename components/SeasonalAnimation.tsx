@@ -202,7 +202,7 @@ export default function SeasonalAnimation({ season }: { season: Season }) {
   return (
     <div
       ref={containerRef}
-      className="season-layer pointer-events-none absolute inset-0 z-[15] overflow-hidden"
+      className="season-layer pointer-events-none absolute inset-0 z-[5] overflow-hidden"
       aria-hidden="true"
       style={{
         maskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 88%)",

@@ -6,7 +6,6 @@ import Hero from "@/components/Hero";
 import InstaGallery from "@/components/InstaGallery";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
-import SeasonalAnimation from "@/components/SeasonalAnimation";
 
 export const dynamic = "force-dynamic";
 
@@ -33,11 +32,7 @@ export default async function HomePage({
 
   return (
     <>
-      {/* 계절 애니메이션은 히어로(상단) 영역에만 머물고 아래로 사라집니다 */}
-      <div className="relative">
-        <SeasonalAnimation season={season} />
-        <Hero />
-      </div>
+      <Hero season={season} />
 
       {/* 카테고리 바로가기 */}
       <section className="container-soft py-14">
