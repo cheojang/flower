@@ -20,7 +20,6 @@ const CONFIG: Record<
   winter: { count: 75, sizeMin: 6, sizeMax: 16, durMin: 6, durMax: 13, opacity: 0.95 },
 };
 
-// 계절별 입자 모양 (SVG)
 function Shape({ season, variant }: { season: Season; variant: number }) {
   if (season === "winter") {
     return (
@@ -70,72 +69,34 @@ const layerStyle = {
   WebkitMaskImage: "linear-gradient(to bottom, black 0%, black 55%, transparent 88%)",
 } as const;
 
-// ────────────────────────────────────────────────
-// 모바일/터치: 순수 CSS 애니메이션 (메인 스레드 부담 0 → 버튼 반응성 유지)
-// ────────────────────────────────────────────────
-function CssParticles({ season }: { season: Season }) {
-  const particles = useMemo(() => {
-    const c = CONFIG[season];
-    const count = Math.round(c.count * 0.55); // 모바일 입자 수 축소
-    return Array.from({ length: count }, () => ({
-      left: Math.random() * 100,
-      size: c.sizeMin + Math.random() * (c.sizeMax - c.sizeMin),
-      dur: c.durMin + Math.random() * (c.durMax - c.durMin),
-      delay: -Math.random() * c.durMax,
-      sway: 1.5 + Math.random() * 2.5,
-      opacity: c.opacity * (0.65 + Math.random() * 0.35),
-      variant: Math.floor(Math.random() * 3),
-    }));
-  }, [season]);
-
-  return (
-    <div className={layerClass} aria-hidden="true" style={layerStyle}>
-      {particles.map((p, i) => (
-        <span
-          key={i}
-          className="absolute top-0"
-          style={{
-            left: `${p.left}%`,
-            width: p.size,
-            height: p.size,
-            animation: `fall-y ${p.dur}s linear ${p.delay}s infinite`,
-          }}
-        >
-          <span
-            className="block h-full w-full"
-            style={{
-              opacity: p.opacity,
-              filter: "drop-shadow(0 1px 1.5px rgba(92,74,69,0.12))",
-              animation: `sway-x ${p.sway}s ease-in-out ${p.delay}s infinite alternate`,
-            }}
-          >
-            <Shape season={season} variant={p.variant} />
-          </span>
-        </span>
-      ))}
-    </div>
-  );
-}
-
 type Phys = { x: number; y: number; vx: number; vy: number; rot: number; vr: number; g: number };
 
 // ────────────────────────────────────────────────
-// PC/마우스: JS 물리 시뮬레이션 (마우스 따라오기)
+// JS 물리 시뮬레이션 (마우스/터치 자석 효과)
+// pointer-events-none 컨테이너라 버튼 탭에 영향 없음
 // ────────────────────────────────────────────────
-function InteractiveParticles({ season }: { season: Season }) {
+function InteractiveParticles({
+  season,
+  isMobile,
+}: {
+  season: Season;
+  isMobile: boolean;
+}) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLSpanElement | null)[]>([]);
 
   const meta = useMemo(() => {
     const c = CONFIG[season];
-    return Array.from({ length: c.count }, () => ({
+    // 모바일은 입자 수 약간 축소
+    const count = isMobile ? Math.round(c.count * 0.65) : c.count;
+    return Array.from({ length: count }, () => ({
       size: c.sizeMin + Math.random() * (c.sizeMax - c.sizeMin),
       opacity: c.opacity * (0.65 + Math.random() * 0.35),
       variant: Math.floor(Math.random() * 3),
       swayPhase: Math.random() * Math.PI * 2,
       swaySpeed: 0.6 + Math.random() * 0.9,
     }));
-  }, [season]);
+  }, [season, isMobile]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -155,26 +116,42 @@ function InteractiveParticles({ season }: { season: Season }) {
     }));
 
     const mouse = { cx: 0, cy: 0, x: 0, y: 0, last: -9999 };
-    const onMove = (e: PointerEvent) => {
+
+    const onPointerMove = (e: PointerEvent) => {
       mouse.cx = e.clientX;
       mouse.cy = e.clientY;
       mouse.last = performance.now();
     };
+    // 터치 전용 보완 — pointermove가 잡지 못하는 경우 커버
+    const onTouchMove = (e: TouchEvent) => {
+      if (e.touches.length > 0) {
+        mouse.cx = e.touches[0].clientX;
+        mouse.cy = e.touches[0].clientY;
+        mouse.last = performance.now();
+      }
+    };
+    const onTouchEnd = () => { mouse.last = -9999; };
     const onResize = () => {
       w = container.clientWidth;
       h = container.clientHeight || 1;
     };
-    window.addEventListener("pointermove", onMove, { passive: true });
+
+    window.addEventListener("pointermove", onPointerMove, { passive: true });
+    window.addEventListener("touchmove", onTouchMove, { passive: true });
+    window.addEventListener("touchend", onTouchEnd, { passive: true });
     window.addEventListener("resize", onResize);
 
-    const R = 280;
+    // 모바일은 자석 반경·세기를 살짝 부드럽게
+    const R = isMobile ? 320 : 280;
+    const FORCE = isMobile ? 0.62 : 0.95;
+
     let raf = 0;
     const tick = () => {
       const now = performance.now();
       const t = now / 1000;
 
       let active = false;
-      if (now - mouse.last < 260) {
+      if (now - mouse.last < 320) {
         const rect = container.getBoundingClientRect();
         mouse.x = mouse.cx - rect.left;
         mouse.y = mouse.cy - rect.top;
@@ -192,7 +169,7 @@ function InteractiveParticles({ season }: { season: Season }) {
           const dy = mouse.y - p.y;
           const d = Math.hypot(dx, dy) || 1;
           if (d < R) {
-            const f = (1 - d / R) * 0.95;
+            const f = (1 - d / R) * FORCE;
             p.vx += (dx / d) * f;
             p.vy += (dy / d) * f;
             if (d < 70) {
@@ -223,10 +200,12 @@ function InteractiveParticles({ season }: { season: Season }) {
 
     return () => {
       cancelAnimationFrame(raf);
-      window.removeEventListener("pointermove", onMove);
+      window.removeEventListener("pointermove", onPointerMove);
+      window.removeEventListener("touchmove", onTouchMove);
+      window.removeEventListener("touchend", onTouchEnd);
       window.removeEventListener("resize", onResize);
     };
-  }, [meta]);
+  }, [meta, isMobile]);
 
   return (
     <div ref={containerRef} className={layerClass} aria-hidden="true" style={layerStyle}>
@@ -252,18 +231,13 @@ function InteractiveParticles({ season }: { season: Season }) {
 }
 
 export default function SeasonalAnimation({ season }: { season: Season }) {
-  const [mode, setMode] = useState<"none" | "css" | "js">("none");
+  const [mode, setMode] = useState<"none" | "mobile" | "desktop">("none");
 
   useEffect(() => {
-    // 터치 기기(마우스 없음)는 CSS, 그 외(PC)는 JS 인터랙티브
     const touch = window.matchMedia("(hover: none), (pointer: coarse)").matches;
-    setMode(touch ? "css" : "js");
+    setMode(touch ? "mobile" : "desktop");
   }, []);
 
   if (mode === "none") return null;
-  return mode === "css" ? (
-    <CssParticles season={season} />
-  ) : (
-    <InteractiveParticles season={season} />
-  );
+  return <InteractiveParticles season={season} isMobile={mode === "mobile"} />;
 }
