@@ -41,11 +41,11 @@ export default function FloatingConsult() {
   ];
 
   return (
-    <div className="fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
+    <div className="pointer-events-none fixed bottom-5 right-5 z-40 flex flex-col items-end gap-3">
       {/* 채널 목록 */}
       <div
         className={`flex flex-col items-end gap-2.5 transition-all duration-300 ${
-          open ? "translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
+          open ? "pointer-events-auto translate-y-0 opacity-100" : "pointer-events-none translate-y-3 opacity-0"
         }`}
       >
         {items.map((it) => (
@@ -74,7 +74,7 @@ export default function FloatingConsult() {
         onClick={() => setOpen((v) => !v)}
         aria-label="상담 채널 열기"
         aria-expanded={open}
-        className="flex h-14 w-14 items-center justify-center rounded-full bg-rose-deep text-white shadow-soft-lg transition hover:bg-rose-deep/90 active:scale-95"
+        className="pointer-events-auto flex h-14 w-14 items-center justify-center rounded-full bg-rose-deep text-white shadow-soft-lg transition hover:bg-rose-deep/90 active:scale-95"
       >
         {open ? (
           <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round">

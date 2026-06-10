@@ -20,12 +20,13 @@
   }
   .btn-primary {
     @apply inline-flex items-center justify-center gap-2 rounded-full bg-rose-deep px-6 py-3
-           text-sm font-medium text-white shadow-soft transition
-           hover:bg-rose-deep/90 active:scale-[0.98];
+           text-sm font-medium text-white shadow-soft transition-transform duration-150
+           hover:bg-rose-deep/90 active:scale-90 active:brightness-95;
   }
   .btn-ghost {
     @apply inline-flex items-center justify-center gap-2 rounded-full border border-rose-deep/40
-           px-6 py-3 text-sm font-medium text-ink transition hover:bg-rose-light/60;
+           px-6 py-3 text-sm font-medium text-ink transition-transform duration-150
+           hover:bg-rose-light/60 active:scale-90 active:bg-rose-light/60;
   }
   .section-title {
     @apply font-serif text-2xl text-ink sm:text-3xl;
