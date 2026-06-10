@@ -1,10 +1,9 @@
 import Link from "next/link";
-import { site, navLinks } from "@/lib/config";
+import { site, navLinks, APP_VERSION } from "@/lib/config";
 import Logo from "./Logo";
 
-// 배포 버전·업데이트 시각 (빌드 시점에 주입됨)
+// 버전·업데이트 시각 (버전은 수동, 시각은 빌드 시점 자동)
 function buildLabel(): string {
-  const sha = (process.env.NEXT_PUBLIC_COMMIT_SHA || "local").slice(0, 7);
   const iso = process.env.NEXT_PUBLIC_BUILD_TIME;
   let when = "";
   if (iso) {
@@ -17,7 +16,7 @@ function buildLabel(): string {
       minute: "2-digit",
     });
   }
-  return `v.${sha}${when ? ` · ${when} 업데이트` : ""}`;
+  return `v${APP_VERSION}${when ? ` · ${when} 업데이트` : ""}`;
 }
 
 export default function Footer() {

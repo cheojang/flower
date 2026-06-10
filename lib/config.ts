@@ -50,6 +50,9 @@ export function formatPrice(won: number): string {
   return won.toLocaleString("ko-KR") + "원";
 }
 
+// 사이트 버전 — 업데이트할 때마다 0.01씩 올립니다 (1.10 → 1.11 → 1.12 ...)
+export const APP_VERSION = "1.10";
+
 // ───────────────────────────────────────────────
 // 랜딩페이지 계절 애니메이션
 //   "auto"  → 현재 날짜(월)에 맞춰 자동 (봄 벚꽃 / 여름 꽃잎 / 가을 은행잎 / 겨울 눈)
