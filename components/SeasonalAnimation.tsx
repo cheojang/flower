@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import type { Season } from "@/lib/config";
 
 const CONFIG: Record<
@@ -68,18 +68,25 @@ type Phys = { x: number; y: number; vx: number; vy: number; rot: number; vr: num
 export default function SeasonalAnimation({ season }: { season: Season }) {
   const containerRef = useRef<HTMLDivElement | null>(null);
   const itemRefs = useRef<(HTMLSpanElement | null)[]>([]);
+  // 클라이언트 마운트 후에만 입자 생성 (SSR 하이드레이션 불일치 방지 + 기기별 수 조절)
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => setMounted(true), []);
 
-  // 입자 메타데이터(크기/모양/흔들림 위상) — 계절 바뀔 때만 재생성
+  // 입자 메타데이터(크기/모양/흔들림 위상) — 계절·마운트 시 생성
   const meta = useMemo(() => {
+    if (!mounted) return [];
     const c = CONFIG[season];
-    return Array.from({ length: c.count }, () => ({
+    // 모바일은 입자 수를 줄여 성능 확보 (탭 반응성 ↑)
+    const isMobile = typeof window !== "undefined" && window.innerWidth < 640;
+    const count = isMobile ? Math.round(c.count * 0.5) : c.count;
+    return Array.from({ length: count }, () => ({
       size: c.sizeMin + Math.random() * (c.sizeMax - c.sizeMin),
       opacity: c.opacity * (0.65 + Math.random() * 0.35),
       variant: Math.floor(Math.random() * 3),
       swayPhase: Math.random() * Math.PI * 2,
       swaySpeed: 0.6 + Math.random() * 0.9,
     }));
-  }, [season]);
+  }, [season, mounted]);
 
   useEffect(() => {
     const container = containerRef.current;
@@ -100,15 +107,12 @@ export default function SeasonalAnimation({ season }: { season: Season }) {
       g: 0.6 + m.size / 36,
     }));
 
-    const mouse = { x: 0, y: 0, inside: false, last: -9999 };
+    // 원시 클라이언트 좌표만 저장(레이아웃 강제 X). 컨테이너 상대 좌표는 프레임당 1회 계산.
+    const mouse = { cx: 0, cy: 0, x: 0, y: 0, last: -9999 };
 
     const onMove = (e: PointerEvent) => {
-      const rect = container.getBoundingClientRect();
-      const x = e.clientX - rect.left;
-      const y = e.clientY - rect.top;
-      mouse.x = x;
-      mouse.y = y;
-      mouse.inside = x >= 0 && x <= rect.width && y >= 0 && y <= rect.height;
+      mouse.cx = e.clientX;
+      mouse.cy = e.clientY;
       mouse.last = performance.now();
     };
     const onResize = () => {
@@ -125,8 +129,16 @@ export default function SeasonalAnimation({ season }: { season: Season }) {
     const tick = () => {
       const now = performance.now();
       const t = now / 1000;
-      // 마우스가 최근에 움직였고 영역 안에 있을 때만 끌어당김
-      const active = mouse.inside && now - mouse.last < 260;
+
+      // 마우스가 최근에 움직였을 때만 컨테이너 위치 1회 측정 후 끌어당김 판정
+      let active = false;
+      if (now - mouse.last < 260) {
+        const rect = container.getBoundingClientRect();
+        mouse.x = mouse.cx - rect.left;
+        mouse.y = mouse.cy - rect.top;
+        active =
+          mouse.x >= 0 && mouse.x <= rect.width && mouse.y >= 0 && mouse.y <= rect.height;
+      }
 
       for (let i = 0; i < phys.length; i++) {
         const p = phys[i];
