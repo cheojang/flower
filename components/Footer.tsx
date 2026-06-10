@@ -2,6 +2,24 @@ import Link from "next/link";
 import { site, navLinks } from "@/lib/config";
 import Logo from "./Logo";
 
+// 배포 버전·업데이트 시각 (빌드 시점에 주입됨)
+function buildLabel(): string {
+  const sha = (process.env.NEXT_PUBLIC_COMMIT_SHA || "local").slice(0, 7);
+  const iso = process.env.NEXT_PUBLIC_BUILD_TIME;
+  let when = "";
+  if (iso) {
+    when = new Date(iso).toLocaleString("ko-KR", {
+      timeZone: "Asia/Seoul",
+      year: "numeric",
+      month: "2-digit",
+      day: "2-digit",
+      hour: "2-digit",
+      minute: "2-digit",
+    });
+  }
+  return `v.${sha}${when ? ` · ${when} 업데이트` : ""}`;
+}
+
 export default function Footer() {
   return (
     <footer className="mt-20 border-t border-rose-light bg-rose-light/30">
@@ -58,9 +76,12 @@ export default function Footer() {
       </div>
 
       <div className="border-t border-rose-light/70 py-5">
-        <p className="container-soft text-center text-xs text-ink-soft">
-          © {new Date().getFullYear()} {site.name} {site.nameEn}. All rights reserved.
-        </p>
+        <div className="container-soft flex flex-col items-center gap-1 sm:flex-row sm:justify-between">
+          <p className="text-xs text-ink-soft">
+            © {new Date().getFullYear()} {site.name} {site.nameEn}. All rights reserved.
+          </p>
+          <p className="text-[10px] text-gray-400">{buildLabel()}</p>
+        </div>
       </div>
     </footer>
   );
