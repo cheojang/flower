@@ -21,16 +21,36 @@ const serif = Gowun_Batang({
 });
 
 export const metadata: Metadata = {
+  metadataBase: new URL(site.url),
   title: {
-    default: `${site.name} ${site.nameEn} · ${site.tagline}`,
+    default: `${site.name} ${site.nameEn} · 양재꽃시장 꽃집`,
     template: `%s · ${site.name}`,
   },
-  description: site.description,
+  description: `${site.description} 양재 화훼센타 안에서 매일 새벽 경매로 들어온 신선한 꽃을 직영가로. 꽃다발·꽃바구니·개업화환·플라워클래스, 매장 픽업과 배송. ${site.address}`,
+  keywords: [
+    "양재 꽃집",
+    "양재꽃시장",
+    "양재 화훼센타",
+    "양재 꽃다발",
+    "서초 꽃집",
+    "서초 꽃배달",
+    "양재동 꽃집",
+    "개업화환",
+    "플라워 클래스",
+    "꽃다발 주문",
+    site.name,
+    site.nameEn,
+  ],
+  alternates: { canonical: "/" },
   openGraph: {
-    title: `${site.name} · ${site.tagline}`,
+    title: `${site.name} · 양재꽃시장 화훼센타 안의 꽃집`,
     description: site.description,
+    url: site.url,
+    siteName: `${site.name} ${site.nameEn}`,
+    locale: "ko_KR",
     type: "website",
   },
+  robots: { index: true, follow: true },
 };
 
 export const viewport: Viewport = {

@@ -1,11 +1,40 @@
 import Link from "next/link";
 import Image from "next/image";
 import { notFound } from "next/navigation";
+import type { Metadata } from "next";
 import { prisma } from "@/lib/db";
 import { site, formatPrice } from "@/lib/config";
 import ProductCard from "@/components/ProductCard";
 
 export const dynamic = "force-dynamic";
+
+export async function generateMetadata({
+  params,
+}: {
+  params: { id: string };
+}): Promise<Metadata> {
+  const product = await prisma.product.findUnique({
+    where: { id: params.id },
+    include: { category: { select: { name: true } } },
+  });
+  if (!product) return { title: "상품을 찾을 수 없어요" };
+
+  const desc = product.description
+    ? product.description.slice(0, 120)
+    : `${product.category.name} · ${formatPrice(product.price)} — 양재 화훼센타 직영 ${site.name}`;
+
+  return {
+    title: `${product.name} | ${product.category.name}`,
+    description: desc,
+    alternates: { canonical: `/shop/${product.id}` },
+    openGraph: {
+      title: `${product.name} · ${site.name}`,
+      description: desc,
+      images: product.imageUrl ? [product.imageUrl] : undefined,
+      type: "website",
+    },
+  };
+}
 
 export default async function ProductDetail({
   params,

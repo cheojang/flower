@@ -34,6 +34,12 @@ export const site = {
     naverPlace: "https://map.naver.com/v5/search/%EB%82%9C%EA%B3%BC%EB%9C%A8%EB%9D%BD", // 난과뜨락 검색
   },
 
+  // 사이트 공개 주소 (SEO·sitemap·OG용). 실제 도메인 연결 시 환경변수로 교체하세요.
+  // Vercel 환경변수 NEXT_PUBLIC_SITE_URL 이 있으면 그것을 우선 사용합니다.
+  url:
+    process.env.NEXT_PUBLIC_SITE_URL?.replace(/\/$/, "") ||
+    "https://flower-drab-zeta.vercel.app",
+
   // 소셜
   instagramUrl: "https://instagram.com/", // ← 교체
 
@@ -85,7 +91,7 @@ export function formatPrice(won: number): string {
 }
 
 // 사이트 버전 — 업데이트할 때마다 0.01씩 올립니다 (1.10 → 1.11 → 1.12 ...)
-export const APP_VERSION = "1.21";
+export const APP_VERSION = "1.22";
 
 // ───────────────────────────────────────────────
 // 랜딩페이지 계절 애니메이션
