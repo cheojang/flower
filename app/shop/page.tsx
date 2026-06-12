@@ -1,4 +1,5 @@
 import { prisma } from "@/lib/db";
+import { usp } from "@/lib/config";
 import ShopFilter from "@/components/ShopFilter";
 import Reveal from "@/components/Reveal";
 
@@ -34,6 +35,9 @@ export default async function ShopPage() {
         <h1 className="section-title mt-3">란뜰의 꽃</h1>
         <p className="mt-2 text-sm text-ink-soft">
           마음을 전하고 싶은 순간, 어울리는 꽃을 골라보세요
+        </p>
+        <p className="mt-3 inline-block rounded-full bg-sage-light px-4 py-1.5 text-xs font-medium text-sage-deep">
+          🌿 {usp.headline}
         </p>
       </Reveal>
 

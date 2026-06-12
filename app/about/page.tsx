@@ -1,5 +1,5 @@
 import Image from "next/image";
-import { site } from "@/lib/config";
+import { site, usp } from "@/lib/config";
 import Reveal from "@/components/Reveal";
 
 export const metadata = { title: "브랜드 스토리" };
@@ -20,6 +20,19 @@ export default function AboutPage() {
         </p>
         <p className="mt-6">
           특별한 날뿐 아니라 평범한 매일을 빛내줄 자연을 제안합니다.
+        </p>
+      </Reveal>
+
+      {/* 왜 양재인가 — 핵심 소구점 */}
+      <Reveal className="mx-auto mt-12 max-w-2xl rounded-4xl bg-sage-light/60 p-8 text-center sm:p-10">
+        <p className="label-chip bg-white/70">Why 양재</p>
+        <h2 className="mt-4 font-serif text-2xl text-ink">{usp.badge}</h2>
+        <p className="mt-4 font-serif leading-loose text-ink-soft">
+          란뜰은 우리나라에서 가장 큰 꽃시장, 양재 화훼센타 안에 있습니다.
+          <br />
+          매일 새벽 경매에서 그날 들어온 꽃을 바로 받아 만들고,
+          <br />
+          중간 유통이 없어 같은 꽃도 더 합리적인 가격으로 드려요.
         </p>
       </Reveal>
 

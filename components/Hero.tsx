@@ -1,6 +1,6 @@
 import Link from "next/link";
 import Image from "next/image";
-import { site } from "@/lib/config";
+import { site, usp } from "@/lib/config";
 import type { Season } from "@/lib/config";
 import SeasonalAnimation from "@/components/SeasonalAnimation";
 
@@ -29,12 +29,15 @@ export default function Hero({ season }: { season: Season }) {
         className="container-soft relative z-10 flex flex-col items-center justify-center py-24 text-center"
         style={{ minHeight: "85vh" }}
       >
-        <p className="label-chip animate-fade-up">{site.instagramHandle}</p>
+        <p className="label-chip animate-fade-up">🌿 {usp.badge}</p>
         <h1 className="mt-5 font-serif text-4xl leading-tight text-ink animate-fade-up sm:text-6xl">
           당신의 일상에 피어나는<br />작은 정원, 란뜰
         </h1>
         <p className="mt-5 max-w-lg font-serif text-lg leading-relaxed text-ink-soft animate-fade-up sm:text-xl">
           뜰에서 꺾어 온 듯한 싱그러움을 당신의 오늘에 선물합니다.
+        </p>
+        <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-soft/90 animate-fade-up">
+          {usp.headline} — {site.instagramHandle}
         </p>
         <div
           className="relative z-20 mt-8 flex flex-col gap-3 animate-fade-up sm:flex-row"

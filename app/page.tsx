@@ -1,7 +1,7 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/db";
-import { resolveSeason, type Season } from "@/lib/config";
+import { resolveSeason, usp, type Season } from "@/lib/config";
 import Hero from "@/components/Hero";
 import InstaGallery from "@/components/InstaGallery";
 import ProductCard from "@/components/ProductCard";
@@ -33,6 +33,28 @@ export default async function HomePage({
   return (
     <>
       <Hero season={season} />
+
+      {/* 양재 직영 USP — 핵심 소구점 */}
+      <section className="container-soft py-14">
+        <Reveal className="mb-8 text-center">
+          <p className="label-chip">Why LANTLE</p>
+          <h2 className="section-title mt-3">{usp.badge}</h2>
+          <p className="mt-3 text-ink-soft">{usp.sub}</p>
+        </Reveal>
+        <div className="grid gap-4 sm:grid-cols-3">
+          {usp.points.map((it, i) => (
+            <Reveal key={it.t} delay={i * 60}>
+              <div className="h-full rounded-3xl border border-sage-light bg-white/60 p-6 text-center">
+                <span className="text-2xl" aria-hidden="true">
+                  {["🌅", "🏷️", "🌷"][i]}
+                </span>
+                <h3 className="mt-3 font-serif text-lg text-ink">{it.t}</h3>
+                <p className="mt-2 text-sm leading-relaxed text-ink-soft">{it.d}</p>
+              </div>
+            </Reveal>
+          ))}
+        </div>
+      </section>
 
       {/* 카테고리 바로가기 */}
       <section className="container-soft py-14">
