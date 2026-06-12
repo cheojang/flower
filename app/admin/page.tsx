@@ -10,16 +10,18 @@ export const metadata = { title: "관리자" };
 export default async function AdminDashboard() {
   if (!isAdminAuthenticated()) redirect("/admin/login");
 
-  const [productCount, categoryCount, featuredCount] = await Promise.all([
+  const [productCount, categoryCount, featuredCount, newOrderCount] = await Promise.all([
     prisma.product.count(),
     prisma.category.count(),
     prisma.product.count({ where: { isFeatured: true } }),
+    prisma.order.count({ where: { status: "NEW" } }),
   ]);
 
   const stats = [
-    { t: "전체 상품", v: productCount, href: "/admin/products" },
-    { t: "카테고리", v: categoryCount, href: "/admin/categories" },
-    { t: "추천(랜딩 노출)", v: featuredCount, href: "/admin/products" },
+    { t: "📦 신규 주문", v: newOrderCount, href: "/admin/orders", highlight: newOrderCount > 0 },
+    { t: "전체 상품", v: productCount, href: "/admin/products", highlight: false },
+    { t: "카테고리", v: categoryCount, href: "/admin/categories", highlight: false },
+    { t: "추천(랜딩 노출)", v: featuredCount, href: "/admin/products", highlight: false },
   ];
 
   return (
@@ -28,15 +30,21 @@ export default async function AdminDashboard() {
       <h1 className="font-serif text-2xl text-ink">대시보드</h1>
       <p className="mt-1 text-sm text-ink-soft">란뜰 상품과 메뉴를 한곳에서 관리하세요.</p>
 
-      <div className="mt-8 grid gap-4 sm:grid-cols-3">
+      <div className="mt-8 grid gap-4 sm:grid-cols-2 lg:grid-cols-4">
         {stats.map((s) => (
           <Link
             key={s.t}
             href={s.href}
-            className="rounded-3xl border border-rose-light bg-white/60 p-6 transition hover:shadow-soft"
+            className={`rounded-3xl border p-6 transition hover:shadow-soft ${
+              s.highlight
+                ? "border-rose-deep/40 bg-rose-light/60"
+                : "border-rose-light bg-white/60"
+            }`}
           >
             <p className="text-sm text-ink-soft">{s.t}</p>
-            <p className="mt-2 font-serif text-3xl text-ink">{s.v}</p>
+            <p className={`mt-2 font-serif text-3xl ${s.highlight ? "text-rose-deep" : "text-ink"}`}>
+              {s.v}
+            </p>
           </Link>
         ))}
       </div>

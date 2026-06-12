@@ -36,6 +36,27 @@ model Product {
 }
 
 // ─────────────────────────────────────────────
+// 주문 (결제 없는 주문서 접수 → 추후 PG 연동 시 status에 PAID 추가 사용)
+// ─────────────────────────────────────────────
+model Order {
+  id           String   @id @default(cuid())
+  orderNo      String   @unique // 예: L250612-001 (날짜+순번)
+  productName  String // 주문 시점 상품명 스냅샷 (상품 삭제돼도 보존)
+  price        Int // 주문 시점 단가 스냅샷
+  quantity     Int      @default(1)
+  customerName String
+  phone        String
+  receiveType  String // "pickup"(매장픽업) | "delivery"(배송)
+  desiredAt    DateTime // 희망 수령/배송 일시
+  address      String   @default("") // 배송일 때만
+  cardMessage  String   @default("") // 카드 문구
+  request      String   @default("") // 요청사항
+  status       String   @default("NEW") // NEW → CONFIRMED → COMPLETED / CANCELED
+  userId       String? // 로그인 주문 시 회원 연결
+  createdAt    DateTime @default(now())
+}
+
+// ─────────────────────────────────────────────
 // NextAuth (회원 소셜 로그인 - 카카오/네이버/구글)
 // ─────────────────────────────────────────────
 model User {

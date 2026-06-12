@@ -73,23 +73,31 @@ export default async function ProductDetail({
           </div>
 
           {/* 주문/상담 CTA */}
-          <div className="mt-6 flex flex-col gap-3 sm:flex-row">
-            <a
-              href={site.consult.kakaoChannel}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-primary flex-1"
+          <div className="mt-6 flex flex-col gap-3">
+            <Link
+              href={`/order/${product.id}`}
+              className="btn-primary w-full py-4 text-base"
             >
-              카카오톡으로 주문 상담
-            </a>
-            <a
-              href={site.consult.naverTalk}
-              target="_blank"
-              rel="noreferrer"
-              className="btn-ghost flex-1"
-            >
-              네이버 톡톡 상담
-            </a>
+              바로 주문하기
+            </Link>
+            <div className="flex flex-col gap-3 sm:flex-row">
+              <a
+                href={site.consult.kakaoChannel}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-ghost flex-1"
+              >
+                카카오톡 상담
+              </a>
+              <a
+                href={site.consult.naverTalk}
+                target="_blank"
+                rel="noreferrer"
+                className="btn-ghost flex-1"
+              >
+                네이버 톡톡 상담
+              </a>
+            </div>
           </div>
           <a
             href={`tel:${site.phone}`}

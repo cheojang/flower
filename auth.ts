@@ -50,6 +50,13 @@ export const authConfig: NextAuthConfig = {
   adapter: PrismaAdapter(prisma),
   providers,
   session: { strategy: "database" },
+  callbacks: {
+    // 세션에 회원 id 노출 (주문 시 회원 연결용)
+    session({ session, user }) {
+      (session.user as { id?: string }).id = user.id;
+      return session;
+    },
+  },
   pages: {
     signIn: "/login",
   },
