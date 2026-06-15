@@ -1,11 +1,12 @@
 import Link from "next/link";
 import Image from "next/image";
 import { prisma } from "@/lib/db";
-import { resolveSeason, usp, type Season } from "@/lib/config";
+import { resolveSeason, usp, seasonWash, type Season } from "@/lib/config";
 import Hero from "@/components/Hero";
 import InstaGallery from "@/components/InstaGallery";
 import ProductCard from "@/components/ProductCard";
 import Reveal from "@/components/Reveal";
+import SeasonTester from "@/components/SeasonTester";
 
 export const dynamic = "force-dynamic";
 
@@ -31,7 +32,17 @@ export default async function HomePage({
     : resolveSeason();
 
   return (
-    <>
+    <div className="relative">
+      {/* 전체 페이지 계절 워시 (테스트 토글로 변경) */}
+      <div
+        aria-hidden="true"
+        className="pointer-events-none absolute inset-0 z-0 transition-colors duration-700"
+        style={{ background: seasonWash[season] }}
+      />
+      {/* ⚠️ 테스트용 계절 토글 — 추후 삭제 */}
+      <SeasonTester current={season} />
+
+      <div className="relative z-10">
       <Hero season={season} />
 
       {/* 양재 직영 USP — 핵심 소구점 */}
@@ -167,6 +178,7 @@ export default async function HomePage({
       </section>
 
       <InstaGallery />
-    </>
+      </div>
+    </div>
   );
 }
