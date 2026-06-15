@@ -91,7 +91,7 @@ export function formatPrice(won: number): string {
 }
 
 // 사이트 버전 — 업데이트할 때마다 0.01씩 올립니다 (1.10 → 1.11 → 1.12 ...)
-export const APP_VERSION = "1.28";
+export const APP_VERSION = "1.29";
 
 // ───────────────────────────────────────────────
 // 랜딩페이지 계절 애니메이션
@@ -116,17 +116,17 @@ export function resolveSeason(): Season {
 // 계절별 배경 틴트 — 떨어지는 꽃/잎 색과 닮은 은은한 상단 그라데이션
 // (위쪽만 살짝 물들이고 아래로 투명해져 텍스트 가독성 유지)
 export const seasonTint: Record<Season, string> = {
-  spring: "linear-gradient(to bottom, rgba(186,215,243,0.70) 0%, rgba(198,221,245,0.12) 45%, rgba(198,221,245,0) 72%)", // 봄 하늘빛 (분홍 꽃잎 대비)
-  summer: "linear-gradient(to bottom, rgba(193,227,191,0.70) 0%, rgba(206,233,205,0.12) 45%, rgba(206,233,205,0) 72%)", // 연한 초록
-  autumn: "linear-gradient(to bottom, rgba(245,201,44,0.72) 0%, rgba(245,203,50,0.14) 45%, rgba(245,203,50,0) 72%)",   // 은행 노랑
-  winter: "linear-gradient(to bottom, rgba(214,228,244,0.74) 0%, rgba(226,235,246,0.14) 45%, rgba(226,235,246,0) 72%)", // 차분한 설백
+  spring: "linear-gradient(to bottom, rgba(251,232,240,0.78) 0%, rgba(251,232,240,0.14) 45%, rgba(251,232,240,0) 72%)", // 흰빛에 가까운 분홍
+  summer: "linear-gradient(to bottom, rgba(226,219,249,0.52) 0%, rgba(226,219,249,0.10) 45%, rgba(226,219,249,0) 72%)", // 은은한 연보라
+  autumn: "linear-gradient(to bottom, rgba(247,228,138,0.46) 0%, rgba(247,228,138,0.09) 45%, rgba(247,228,138,0) 72%)",  // 은은한 노랑
+  winter: "linear-gradient(to bottom, rgba(214,228,244,0.70) 0%, rgba(226,235,246,0.14) 45%, rgba(226,235,246,0) 72%)", // 차분한 설백
 };
 
 // 페이지 전체에 깔리는 아주 옅은 계절 워시(전반적 색감) — 카드까지 은은히 물듦
 export const seasonWash: Record<Season, string> = {
-  spring: "rgba(198,221,245,0.22)",
-  summer: "rgba(206,233,205,0.22)",
-  autumn: "rgba(245,203,50,0.26)",
+  spring: "rgba(251,232,240,0.22)",
+  summer: "rgba(226,219,249,0.18)",
+  autumn: "rgba(247,228,138,0.20)",
   winter: "rgba(226,235,246,0.24)",
 };
 

@@ -76,7 +76,7 @@ function Shape({ season, variant }: { season: Season; variant: number }) {
     );
   }
   // 봄 — 벚꽃잎 (한층 연한 파스텔 핑크)
-  const colors = ["#FBD9E6", "#FCE3EE", "#F8CFE0"];
+  const colors = ["#F7BDD4", "#F4B2CB", "#F9C9DD"];
   return (
     <svg viewBox="0 0 20 20" width="100%" height="100%">
       <path d="M10 2 C13 5 13 11 10 17 C7 11 7 5 10 2 Z" fill={colors[variant % colors.length]} />
