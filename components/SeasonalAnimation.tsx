@@ -14,10 +14,10 @@ const CONFIG: Record<
     opacity: number;
   }
 > = {
-  spring: { count: 46, sizeMin: 22, sizeMax: 42, durMin: 6, durMax: 12, opacity: 0.95 },
+  spring: { count: 58, sizeMin: 22, sizeMax: 42, durMin: 6, durMax: 12, opacity: 0.95 },
   summer: { count: 55, sizeMin: 16, sizeMax: 32, durMin: 5, durMax: 10, opacity: 0.95 },
   autumn: { count: 44, sizeMin: 16, sizeMax: 32, durMin: 6, durMax: 12, opacity: 0.95 },
-  winter: { count: 75, sizeMin: 6, sizeMax: 16, durMin: 6, durMax: 13, opacity: 0.95 },
+  winter: { count: 95, sizeMin: 6, sizeMax: 16, durMin: 6, durMax: 13, opacity: 0.95 },
 };
 
 function Shape({ season, variant }: { season: Season; variant: number }) {
