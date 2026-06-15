@@ -91,7 +91,7 @@ export function formatPrice(won: number): string {
 }
 
 // 사이트 버전 — 업데이트할 때마다 0.01씩 올립니다 (1.10 → 1.11 → 1.12 ...)
-export const APP_VERSION = "1.22";
+export const APP_VERSION = "1.23";
 
 // ───────────────────────────────────────────────
 // 랜딩페이지 계절 애니메이션
@@ -104,11 +104,20 @@ export const seasonSetting: "auto" | Season = "auto";
 export function getCurrentSeason(): Season {
   const m = new Date().getMonth() + 1; // 1~12
   if (m >= 3 && m <= 5) return "spring";
-  if (m >= 6 && m <= 8) return "summer";
-  if (m >= 9 && m <= 11) return "autumn";
+  if (m >= 6 && m <= 9) return "summer";
+  if (m >= 10 && m <= 11) return "autumn";
   return "winter";
 }
 
 export function resolveSeason(): Season {
   return seasonSetting === "auto" ? getCurrentSeason() : seasonSetting;
 }
+
+// 계절별 배경 틴트 — 떨어지는 꽃/잎 색과 닮은 은은한 상단 그라데이션
+// (위쪽만 살짝 물들이고 아래로 투명해져 텍스트 가독성 유지)
+export const seasonTint: Record<Season, string> = {
+  spring: "linear-gradient(to bottom, rgba(250,214,228,0.42) 0%, rgba(250,214,228,0) 62%)", // 연한 벚꽃
+  summer: "linear-gradient(to bottom, rgba(221,214,254,0.40) 0%, rgba(221,214,254,0) 62%)", // 연보라
+  autumn: "linear-gradient(to bottom, rgba(244,208,63,0.32) 0%, rgba(244,208,63,0) 62%)",   // 은행 노랑
+  winter: "linear-gradient(to bottom, rgba(226,235,246,0.52) 0%, rgba(226,235,246,0) 62%)", // 차분한 설백
+};

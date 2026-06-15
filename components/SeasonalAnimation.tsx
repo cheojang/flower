@@ -30,11 +30,26 @@ function Shape({ season, variant }: { season: Season; variant: number }) {
     );
   }
   if (season === "autumn") {
-    const colors = ["#F2D98C", "#E8C45C", "#EAB94B"];
+    // 변이 0 → 단풍잎(주황·빨강), 1·2 → 은행잎(노랑) — 노란빛이 더 많게
+    if (variant % 3 !== 0) {
+      const golds = ["#F4D03F", "#F2C53D", "#EFD35A"];
+      return (
+        <svg viewBox="0 0 24 24" width="100%" height="100%">
+          {/* 은행나무 잎 — 부채꼴 + 가운데 살짝 갈라진 홈 */}
+          <path
+            d="M12 21 C8 16 5 11 6 9 C8 10 10 10.4 11.4 10.8 L12 9.2 L12.6 10.8 C14 10.4 16 10 18 9 C19 11 16 16 12 21 Z"
+            fill={golds[variant % golds.length]}
+          />
+          <line x1="12" y1="21" x2="12" y2="14.5" stroke="#E0B72E" strokeWidth="1" />
+        </svg>
+      );
+    }
+    const reds = ["#E8743B", "#D9542E", "#E89A37"];
     return (
       <svg viewBox="0 0 20 22" width="100%" height="100%">
-        <path d="M10 21 Q6 13 4 7 Q10 10 16 7 Q14 13 10 21 Z" fill={colors[variant % colors.length]} />
-        <line x1="10" y1="21" x2="10" y2="13" stroke="#D9A93B" strokeWidth="1" />
+        {/* 단풍잎 */}
+        <path d="M10 21 Q6 13 4 7 Q10 10 16 7 Q14 13 10 21 Z" fill={reds[variant % reds.length]} />
+        <line x1="10" y1="21" x2="10" y2="13" stroke="#B8472A" strokeWidth="1" />
       </svg>
     );
   }
@@ -53,11 +68,12 @@ function Shape({ season, variant }: { season: Season; variant: number }) {
       </svg>
     );
   }
-  const colors = ["#F6A8C6", "#EF93B6", "#F9C2D8"];
+  // 봄 — 벚꽃잎 (한층 연한 파스텔 핑크)
+  const colors = ["#FBD9E6", "#FCE3EE", "#F8CFE0"];
   return (
     <svg viewBox="0 0 20 20" width="100%" height="100%">
       <path d="M10 2 C13 5 13 11 10 17 C7 11 7 5 10 2 Z" fill={colors[variant % colors.length]} />
-      <path d="M10 17 L8.5 14.5 L11.5 14.5 Z" fill="#FBFAFB" opacity="0.6" />
+      <path d="M10 17 L8.5 14.5 L11.5 14.5 Z" fill="#FFFFFF" opacity="0.65" />
     </svg>
   );
 }
