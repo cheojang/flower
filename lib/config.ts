@@ -91,7 +91,7 @@ export function formatPrice(won: number): string {
 }
 
 // 사이트 버전 — 업데이트할 때마다 0.01씩 올립니다 (1.10 → 1.11 → 1.12 ...)
-export const APP_VERSION = "1.24";
+export const APP_VERSION = "1.25";
 
 // ───────────────────────────────────────────────
 // 랜딩페이지 계절 애니메이션
@@ -118,7 +118,7 @@ export function resolveSeason(): Season {
 export const seasonTint: Record<Season, string> = {
   spring: "linear-gradient(to bottom, rgba(250,214,228,0.42) 0%, rgba(250,214,228,0) 62%)", // 연한 벚꽃
   summer: "linear-gradient(to bottom, rgba(221,214,254,0.40) 0%, rgba(221,214,254,0) 62%)", // 연보라
-  autumn: "linear-gradient(to bottom, rgba(244,208,63,0.32) 0%, rgba(244,208,63,0) 62%)",   // 은행 노랑
+  autumn: "linear-gradient(to bottom, rgba(245,203,50,0.48) 0%, rgba(245,203,50,0.06) 62%)",   // 은행 노랑
   winter: "linear-gradient(to bottom, rgba(226,235,246,0.52) 0%, rgba(226,235,246,0) 62%)", // 차분한 설백
 };
 
@@ -126,7 +126,7 @@ export const seasonTint: Record<Season, string> = {
 export const seasonWash: Record<Season, string> = {
   spring: "rgba(250,214,228,0.20)",
   summer: "rgba(221,214,254,0.18)",
-  autumn: "rgba(244,208,63,0.14)",
+  autumn: "rgba(245,203,50,0.26)",
   winter: "rgba(226,235,246,0.24)",
 };
 

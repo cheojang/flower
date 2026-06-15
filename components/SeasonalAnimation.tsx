@@ -14,7 +14,7 @@ const CONFIG: Record<
     opacity: number;
   }
 > = {
-  spring: { count: 50, sizeMin: 14, sizeMax: 28, durMin: 6, durMax: 12, opacity: 0.95 },
+  spring: { count: 46, sizeMin: 22, sizeMax: 42, durMin: 6, durMax: 12, opacity: 0.95 },
   summer: { count: 55, sizeMin: 16, sizeMax: 32, durMin: 5, durMax: 10, opacity: 0.95 },
   autumn: { count: 44, sizeMin: 16, sizeMax: 32, durMin: 6, durMax: 12, opacity: 0.95 },
   winter: { count: 75, sizeMin: 6, sizeMax: 16, durMin: 6, durMax: 13, opacity: 0.95 },
@@ -30,26 +30,33 @@ function Shape({ season, variant }: { season: Season; variant: number }) {
     );
   }
   if (season === "autumn") {
-    // 변이 0 → 단풍잎(주황·빨강), 1·2 → 은행잎(노랑) — 노란빛이 더 많게
+    // 변이 0 → 단풍잎(빨강), 1·2 → 은행잎(노랑) — 노란빛이 더 많게
     if (variant % 3 !== 0) {
-      const golds = ["#F4D03F", "#F2C53D", "#EFD35A"];
+      const golds = ["#F5CB32", "#F2C238", "#EFD659"];
       return (
         <svg viewBox="0 0 24 24" width="100%" height="100%">
-          {/* 은행나무 잎 — 부채꼴 + 가운데 살짝 갈라진 홈 */}
+          {/* 은행나무 잎 — 또렷한 부채꼴 + 윗변 가운데 V홈, 방사형 잎맥 */}
           <path
-            d="M12 21 C8 16 5 11 6 9 C8 10 10 10.4 11.4 10.8 L12 9.2 L12.6 10.8 C14 10.4 16 10 18 9 C19 11 16 16 12 21 Z"
+            d="M12 22 C8.6 17 4.6 12 5.2 8 C7.6 9.2 9.8 9.7 11.4 11 L12 11.7 L12.6 11 C14.2 9.7 16.4 9.2 18.8 8 C19.4 12 15.4 17 12 22 Z"
             fill={golds[variant % golds.length]}
           />
-          <line x1="12" y1="21" x2="12" y2="14.5" stroke="#E0B72E" strokeWidth="1" />
+          <g stroke="#D9A91F" strokeWidth="0.7" opacity="0.65">
+            <line x1="12" y1="22" x2="7.5" y2="10" />
+            <line x1="12" y1="22" x2="12" y2="12.5" />
+            <line x1="12" y1="22" x2="16.5" y2="10" />
+          </g>
         </svg>
       );
     }
-    const reds = ["#E8743B", "#D9542E", "#E89A37"];
+    const reds = ["#D94436", "#C7372C", "#E2543A"];
     return (
-      <svg viewBox="0 0 20 22" width="100%" height="100%">
-        {/* 단풍잎 */}
-        <path d="M10 21 Q6 13 4 7 Q10 10 16 7 Q14 13 10 21 Z" fill={reds[variant % reds.length]} />
-        <line x1="10" y1="21" x2="10" y2="13" stroke="#B8472A" strokeWidth="1" />
+      <svg viewBox="0 0 24 24" width="100%" height="100%">
+        {/* 단풍잎 — 5갈래 뾰족한 실루엣 + 잎자루 */}
+        <path
+          d="M12 1.5 L14 7 L18.5 6.5 L16 11 L20 14 L14 15 L12 18.5 L10 15 L4 14 L8 11 L5.5 6.5 L10 7 Z"
+          fill={reds[variant % reds.length]}
+        />
+        <line x1="12" y1="18.5" x2="12" y2="22.5" stroke="#A12C24" strokeWidth="1" />
       </svg>
     );
   }
