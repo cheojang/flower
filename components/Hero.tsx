@@ -18,9 +18,11 @@ export default function Hero({ season }: { season: Season }) {
           className="object-cover"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-cream via-cream/40 to-cream/10" />
-        <div className="absolute inset-0 bg-rose/10" />
-        {/* 계절 틴트 — 떨어지는 꽃/잎 색과 닮은 은은한 물듦 */}
-        <div className="absolute inset-0" style={{ background: seasonTint[season] }} />
+        {/* 계절 틴트 — 상단을 계절 색으로 물들임 (고정 분홍 오버레이 제거) */}
+        <div
+          className="absolute inset-0 transition-colors duration-700"
+          style={{ background: seasonTint[season] }}
+        />
       </div>
 
       {/* 계절 애니메이션 (모바일=CSS, PC=JS / 배경 위·콘텐츠 아래) */}
