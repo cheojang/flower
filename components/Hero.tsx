@@ -10,12 +10,12 @@ export default function Hero({ season }: { season: Season }) {
       {/* 배경 이미지 (가장 아래) */}
       <div className="absolute inset-0">
         <Image
-          src="/img/hero-v2.jpg"
+          src="/img/hero-v3.jpg"
           alt="파스텔 톤 꽃다발"
           fill
           priority
           sizes="100vw"
-          className="object-cover"
+          className="object-cover object-left"
         />
         <div className="absolute inset-0 bg-gradient-to-t from-cream via-cream/40 to-cream/10" />
         {/* 계절 틴트 — 상단을 계절 색으로 물들임 (고정 분홍 오버레이 제거) */}
