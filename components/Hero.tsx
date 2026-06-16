@@ -33,7 +33,6 @@ export default function Hero({ season }: { season: Season }) {
         className="container-soft relative z-10 flex flex-col items-center justify-center py-24 text-center"
         style={{ minHeight: "85vh" }}
       >
-        <p className="label-chip animate-fade-up">🌿 {usp.badge}</p>
         <h1 className="mt-5 font-serif text-4xl leading-tight text-ink animate-fade-up sm:text-6xl">
           당신의 일상에 피어나는<br />작은 정원, 란뜰
         </h1>
