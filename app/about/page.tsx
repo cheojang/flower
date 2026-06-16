@@ -39,7 +39,7 @@ export default function AboutPage() {
       <Reveal className="mt-12">
         <div className="relative aspect-[16/9] overflow-hidden rounded-4xl shadow-soft">
           <Image
-            src="/img/banner-about.svg"
+            src="/img/banner-about.jpg"
             alt="란뜰 작업실"
             fill
             sizes="100vw"

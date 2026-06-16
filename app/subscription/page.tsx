@@ -35,7 +35,7 @@ export default function SubscriptionPage() {
       <section className="relative overflow-hidden">
         <div className="absolute inset-0">
           <Image
-            src="/img/banner-about.svg"
+            src="/img/banner-about.jpg"
             alt="정기구독"
             fill
             sizes="100vw"

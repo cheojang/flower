@@ -15,14 +15,14 @@ const classes = [
     name: "원데이 클래스",
     price: 55000,
     desc: "처음이어도 괜찮아요. 2시간 동안 내 손으로 완성하는 꽃 작품 한 점.",
-    img: "/img/gallery-1.svg",
+    img: "/img/gallery-1.jpg",
     sub: onedayItems,
   },
   {
     name: "단체·기업 클래스",
     price: 0,
     desc: "친구 모임, 회사 워크숍을 위한 맞춤형 클래스 (인원·예산별 견적)",
-    img: "/img/gallery-7.svg",
+    img: "/img/gallery-7.jpg",
     sub: null,
   },
 ];

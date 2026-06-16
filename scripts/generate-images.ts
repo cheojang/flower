@@ -200,6 +200,10 @@ const IMG_DIR = path.join(process.cwd(), "public", "img");
 const args = process.argv.slice(2);
 const DRY = args.includes("--dry");
 const NO_APPLY = args.includes("--no-apply");
+const SKIP_EXISTING = args.includes("--skip-existing");
+// 요청 간격(ms) — Imagen 분당 quota 회피용. --delay=15000 처럼 조절 가능
+const DELAY = Number(args.find((a) => a.startsWith("--delay="))?.split("=")[1] ?? 12000);
+const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const onlyArg = args.find((a) => a.startsWith("--only="))?.split("=")[1] as
   | "brand"
   | "product"
@@ -232,26 +236,38 @@ async function generateOne(spec: Spec, token: string): Promise<Buffer> {
     },
   };
 
-  const res = await fetch(url, {
-    method: "POST",
-    headers: {
-      Authorization: `Bearer ${token}`,
-      "Content-Type": "application/json",
-    },
-    body: JSON.stringify(body),
-  });
+  // 429(quota)·5xx 는 지수 백오프로 재시도
+  const backoffs = [20000, 40000, 80000, 120000];
+  for (let attempt = 0; ; attempt++) {
+    const res = await fetch(url, {
+      method: "POST",
+      headers: {
+        Authorization: `Bearer ${token}`,
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(body),
+    });
 
-  if (!res.ok) {
+    if (res.ok) {
+      const json = (await res.json()) as {
+        predictions?: { bytesBase64Encoded?: string }[];
+      };
+      const b64 = json.predictions?.[0]?.bytesBase64Encoded;
+      if (!b64)
+        throw new Error("응답에 이미지 데이터가 없습니다: " + JSON.stringify(json).slice(0, 300));
+      return Buffer.from(b64, "base64");
+    }
+
     const text = await res.text();
-    throw new Error(`Imagen 호출 실패 (${res.status}): ${text.slice(0, 500)}`);
+    const retryable = res.status === 429 || res.status >= 500;
+    if (retryable && attempt < backoffs.length) {
+      const wait = backoffs[attempt];
+      process.stdout.write(`(quota, ${wait / 1000}s 대기 후 재시도) `);
+      await sleep(wait);
+      continue;
+    }
+    throw new Error(`Imagen 호출 실패 (${res.status}): ${text.slice(0, 300)}`);
   }
-
-  const json = (await res.json()) as {
-    predictions?: { bytesBase64Encoded?: string }[];
-  };
-  const b64 = json.predictions?.[0]?.bytesBase64Encoded;
-  if (!b64) throw new Error("응답에 이미지 데이터가 없습니다: " + JSON.stringify(json).slice(0, 300));
-  return Buffer.from(b64, "base64");
 }
 
 async function patchBrandRefs(generated: Set<string>) {
@@ -342,17 +358,35 @@ async function main() {
   const token = await getAccessToken();
   const generated = new Set<string>();
 
-  for (const spec of specs) {
+  for (let i = 0; i < specs.length; i++) {
+    const spec = specs[i];
+    const outPath = path.join(IMG_DIR, `${spec.file}.jpg`);
+
+    // 이미 만든 건 건너뛰기 (재실행 시 중복 과금 방지)
+    if (SKIP_EXISTING) {
+      try {
+        await access(outPath);
+        generated.add(spec.file); // 참조 교체 대상에는 포함
+        console.log(`  • ${spec.file}.jpg … (이미 있음, 건너뜀)`);
+        continue;
+      } catch {
+        /* 없으면 생성 진행 */
+      }
+    }
+
     process.stdout.write(`  • ${spec.file}.jpg … `);
     try {
       const buf = await generateOne(spec, token);
-      await writeFile(path.join(IMG_DIR, `${spec.file}.jpg`), buf);
+      await writeFile(outPath, buf);
       generated.add(spec.file);
       console.log(`✓ (${(buf.length / 1024).toFixed(0)} KB)`);
     } catch (e) {
       console.log("✗");
       console.error("     " + (e as Error).message);
     }
+
+    // 다음 요청 전 간격 (quota 회피)
+    if (i < specs.length - 1) await sleep(DELAY);
   }
 
   console.log(`\n생성 완료: ${generated.size}/${specs.length}`);
