@@ -23,6 +23,14 @@ export default function Hero({ season }: { season: Season }) {
           className="absolute inset-0 transition-colors duration-700"
           style={{ background: seasonTint[season] }}
         />
+        {/* 텍스트 가독성용 소프트 스크림 (가운데를 은은히 밝혀 글씨를 띄움) */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(75% 60% at 50% 46%, rgba(255,251,247,0.72) 0%, rgba(255,251,247,0.30) 45%, rgba(255,251,247,0) 75%)",
+          }}
+        />
       </div>
 
       {/* 계절 애니메이션 (모바일=CSS, PC=JS / 배경 위·콘텐츠 아래) */}
@@ -33,13 +41,22 @@ export default function Hero({ season }: { season: Season }) {
         className="container-soft relative z-10 flex flex-col items-center justify-center py-24 text-center"
         style={{ minHeight: "85vh" }}
       >
-        <h1 className="mt-5 font-serif text-4xl leading-tight text-ink animate-fade-up sm:text-6xl">
+        <h1
+          className="mt-5 font-serif text-4xl font-medium leading-tight text-ink animate-fade-up sm:text-6xl"
+          style={{ textShadow: "0 1px 16px rgba(255,251,247,0.95), 0 1px 3px rgba(255,251,247,0.9)" }}
+        >
           당신의 일상에 피어나는<br />작은 정원, 란뜰
         </h1>
-        <p className="mt-5 max-w-lg font-serif text-lg leading-relaxed text-ink-soft animate-fade-up sm:text-xl">
+        <p
+          className="mt-5 max-w-lg font-serif text-lg leading-relaxed text-ink animate-fade-up sm:text-xl"
+          style={{ textShadow: "0 1px 12px rgba(255,251,247,0.95)" }}
+        >
           뜰에서 꺾어 온 듯한 싱그러움을 당신의 오늘에 선물합니다.
         </p>
-        <p className="mt-3 max-w-md text-sm leading-relaxed text-ink-soft/90 animate-fade-up">
+        <p
+          className="mt-3 max-w-md text-sm leading-relaxed text-ink-soft animate-fade-up"
+          style={{ textShadow: "0 1px 10px rgba(255,251,247,0.95)" }}
+        >
           {usp.headline} — {site.instagramHandle}
         </p>
         <div
