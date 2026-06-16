@@ -210,8 +210,8 @@ const SPECS: Spec[] = [
     kind: "product",
     prompt:
       "A close-up indoor studio product photograph of one small clear glass bell jar cloche standing on a plain surface, " +
-      "with green moss, tiny ferns and small pebbles arranged inside the glass jar. " +
-      "The single glass jar fills the frame, indoor product shot, no flowers, no people, no tree, no outdoor scene. " +
+      "with lush green moss, tiny ferns, small succulents and a few pebbles arranged inside the glass jar — only green plants, no flowers at all. " +
+      "The single glass jar fills the frame, indoor product shot, no flowers, no roses, no people, no tree, no outdoor scene. " +
       STYLE,
   },
 ];
