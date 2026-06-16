@@ -19,6 +19,14 @@ prisma/migrations/
 .env
 .env*.local
 
+# GCP 서비스 계정 키 (절대 커밋 금지 — 비밀)
+*service-account*.json
+*-key.json
+*credentials*.json
+gcp-key*.json
+vertex-key*.json
+bareun-baleum*.json
+
 # misc
 .DS_Store
 *.pem
