@@ -73,8 +73,10 @@ const SPECS: Spec[] = [
     aspectRatio: "16:9",
     kind: "brand",
     prompt:
-      "Wide hero banner of a cozy Korean flower shop interior at Yangjae flower market, " +
-      "abundant fresh pastel bouquets in buckets, morning light through the window, dreamy and warm. " +
+      "A serene minimal wide hero banner for an elegant flower shop: a single understated pastel bouquet " +
+      "or just a few stems in a simple vase, placed off to one side on a clean uncluttered surface, " +
+      "with generous empty negative space for text, soft natural light, calm tidy and refined, " +
+      "muted neutral tones, simple uncluttered composition. " +
       STYLE,
   },
   {
