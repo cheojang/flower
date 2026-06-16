@@ -62,6 +62,8 @@ const NEGATIVE =
   "card, paper card, message card, greeting card, note card, label, sticker, tag, price tag, " +
   "printed ribbon, ribbon with text, ribbon, sash, paper sash, fan-shaped sash, vertical banner, bow, ribbon bow, " +
   "sign, signboard, message board, banner, poster, watermark, logo, stamp, " +
+  "collage, grid, multiple panels, split image, diptych, triptych, picture-in-picture, " +
+  "dog, cat, animal, pet, portrait, face, " +
   "person, people, human, hand, hands, fingers, arm, blurry, low quality, distorted";
 
 const SPECS: Spec[] = [
@@ -146,13 +148,19 @@ const SPECS: Spec[] = [
     file: "product-1",
     aspectRatio: "1:1",
     kind: "product",
-    prompt: "A signature spring bouquet of pastel ranunculus and tulips, soft and romantic. " + STYLE,
+    prompt:
+      "A single full-frame studio product photograph of one spring bouquet of pastel ranunculus and tulips, " +
+      "wrapped in plain unprinted matte paper in a soft solid color and tied simply, one bouquet centered in a single frame. " +
+      STYLE,
   },
   {
     file: "product-2",
     aspectRatio: "1:1",
     kind: "product",
-    prompt: "A small daily mini bouquet, dainty and casual, easy gift size. " + STYLE,
+    prompt:
+      "A small daily mini bouquet, dainty and casual, easy gift size, " +
+      "wrapped in plain unprinted matte paper in a soft solid color. " +
+      STYLE,
   },
   {
     file: "product-3",
@@ -200,7 +208,11 @@ const SPECS: Spec[] = [
     file: "product-8",
     aspectRatio: "1:1",
     kind: "product",
-    prompt: "An aesthetic glass terrarium miniature garden with moss and small props. " + STYLE,
+    prompt:
+      "A close-up indoor studio product photograph of one small clear glass bell jar cloche standing on a plain surface, " +
+      "with green moss, tiny ferns and small pebbles arranged inside the glass jar. " +
+      "The single glass jar fills the frame, indoor product shot, no flowers, no people, no tree, no outdoor scene. " +
+      STYLE,
   },
 ];
 
@@ -252,8 +264,8 @@ async function generateOne(spec: Spec, token: string): Promise<Buffer> {
 
   // 상품 사진은 동일 배경(BACKGROUND) + 장식/글자 제거 문구를 덧붙여 톤 통일·텍스트 억제
   const CLEAN =
-    "Only fresh flowers and green leaves, simply presented, with no ribbon, no bow, no sash, " +
-    "no card, no message card, no label, no tag, and no text or letters anywhere in the image.";
+    "Presented cleanly with no ribbon, no bow, no sash, no card, no message card, no label, no tag, " +
+    "and absolutely no text or letters anywhere in the image. Any wrapping paper must be plain and unprinted.";
   const promptText =
     spec.kind === "product" ? `${spec.prompt} ${CLEAN} ${BACKGROUND}` : spec.prompt;
 
