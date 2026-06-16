@@ -241,6 +241,8 @@ const SKIP_EXISTING = args.includes("--skip-existing");
 const DELAY = Number(args.find((a) => a.startsWith("--delay="))?.split("=")[1] ?? 12000);
 // 변형 N장 생성 — public/img/variants/<file>-<n>.jpg 로 저장(대표 이미지·참조는 건드리지 않음)
 const COUNT = Math.max(1, Number(args.find((a) => a.startsWith("--count="))?.split("=")[1] ?? 1));
+// 변형 시작 번호 (예비 추가 시 기존 파일과 겹치지 않게). 기본 1
+const START = Math.max(1, Number(args.find((a) => a.startsWith("--start="))?.split("=")[1] ?? 1));
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const onlyArg = args.find((a) => a.startsWith("--only="))?.split("=")[1] as
   | "brand"
@@ -420,7 +422,7 @@ async function main() {
     const total = specs.length * COUNT;
     for (let s = 0; s < specs.length; s++) {
       const spec = specs[s];
-      for (let n = 1; n <= COUNT; n++) {
+      for (let n = START; n <= START + COUNT - 1; n++) {
         process.stdout.write(`  • ${spec.file}-${n}.jpg … `);
         try {
           const buf = await generateOne(spec, token);
@@ -431,7 +433,7 @@ async function main() {
           console.log("✗");
           console.error("     " + (e as Error).message);
         }
-        if (!(s === specs.length - 1 && n === COUNT)) await sleep(DELAY);
+        if (!(s === specs.length - 1 && n === START + COUNT - 1)) await sleep(DELAY);
       }
     }
     console.log(`\n변형 생성 완료: ${ok}/${total} → public/img/variants/`);
