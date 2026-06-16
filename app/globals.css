@@ -8,6 +8,9 @@
   }
   body {
     @apply bg-cream text-ink antialiased;
+    /* 한글 줄바꿈을 어절(띄어쓰기) 단위로 — 단어 중간에서 잘리지 않게 */
+    word-break: keep-all;
+    overflow-wrap: break-word;
   }
   ::selection {
     @apply bg-rose/40 text-ink;
