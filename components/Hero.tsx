@@ -10,7 +10,7 @@ export default function Hero({ season }: { season: Season }) {
       {/* 배경 이미지 (가장 아래) */}
       <div className="absolute inset-0">
         <Image
-          src="/img/hero.jpg"
+          src="/img/hero-v2.jpg"
           alt="파스텔 톤 꽃다발"
           fill
           priority
