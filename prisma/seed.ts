@@ -120,7 +120,17 @@ async function main() {
   // 강제로 다시 채우려면 SEED_FORCE=1 환경변수와 함께 실행하세요.
   const productCount = await prisma.product.count();
   if (productCount > 0 && !process.env.SEED_FORCE) {
-    console.log(`ℹ️ 상품 ${productCount}개가 이미 있어 상품 시드를 건너뜁니다.`);
+    // 이미 상품이 있으면 전체 재삽입은 건너뛰되, 이미지 경로(및 설명)는 최신으로 동기화
+    // → 기존에 .svg 로 저장된 라이브 상품을 새 AI 이미지(.jpg)로 갱신
+    let synced = 0;
+    for (const p of products) {
+      const r = await prisma.product.updateMany({
+        where: { name: p.name },
+        data: { imageUrl: p.imageUrl },
+      });
+      synced += r.count;
+    }
+    console.log(`ℹ️ 상품 ${productCount}개 존재 → 이미지 경로 ${synced}건 동기화 후 시드 건너뜀.`);
     return;
   }
 
