@@ -29,7 +29,7 @@
  */
 
 import { GoogleAuth } from "google-auth-library";
-import { writeFile, readFile, access } from "fs/promises";
+import { writeFile, readFile, access, mkdir } from "fs/promises";
 import path from "path";
 
 type Spec = {
@@ -231,6 +231,7 @@ const LOCATION = process.env.GCP_LOCATION || "us-central1";
 const MODEL = process.env.IMAGEN_MODEL || "imagen-4.0-generate-001";
 const IMAGE_SIZE = process.env.IMAGEN_SIZE || "2K"; // 1K | 2K (Imagen 생성 최대 2K=2048px)
 const IMG_DIR = path.join(process.cwd(), "public", "img");
+const VAR_DIR = path.join(IMG_DIR, "variants");
 
 const args = process.argv.slice(2);
 const DRY = args.includes("--dry");
@@ -238,6 +239,8 @@ const NO_APPLY = args.includes("--no-apply");
 const SKIP_EXISTING = args.includes("--skip-existing");
 // 요청 간격(ms) — Imagen 분당 quota 회피용. --delay=15000 처럼 조절 가능
 const DELAY = Number(args.find((a) => a.startsWith("--delay="))?.split("=")[1] ?? 12000);
+// 변형 N장 생성 — public/img/variants/<file>-<n>.jpg 로 저장(대표 이미지·참조는 건드리지 않음)
+const COUNT = Math.max(1, Number(args.find((a) => a.startsWith("--count="))?.split("=")[1] ?? 1));
 const sleep = (ms: number) => new Promise((r) => setTimeout(r, ms));
 const onlyArg = args.find((a) => a.startsWith("--only="))?.split("=")[1] as
   | "brand"
@@ -409,6 +412,31 @@ async function main() {
 
   const token = await getAccessToken();
   const generated = new Set<string>();
+
+  // ── 변형 N장 모드 (--count=5): 후보를 variants/ 에 저장, 대표/참조는 미변경 ──
+  if (COUNT > 1) {
+    await mkdir(VAR_DIR, { recursive: true });
+    let ok = 0;
+    const total = specs.length * COUNT;
+    for (let s = 0; s < specs.length; s++) {
+      const spec = specs[s];
+      for (let n = 1; n <= COUNT; n++) {
+        process.stdout.write(`  • ${spec.file}-${n}.jpg … `);
+        try {
+          const buf = await generateOne(spec, token);
+          await writeFile(path.join(VAR_DIR, `${spec.file}-${n}.jpg`), buf);
+          ok++;
+          console.log(`✓ (${(buf.length / 1024).toFixed(0)} KB)`);
+        } catch (e) {
+          console.log("✗");
+          console.error("     " + (e as Error).message);
+        }
+        if (!(s === specs.length - 1 && n === COUNT)) await sleep(DELAY);
+      }
+    }
+    console.log(`\n변형 생성 완료: ${ok}/${total} → public/img/variants/`);
+    return;
+  }
 
   for (let i = 0; i < specs.length; i++) {
     const spec = specs[i];

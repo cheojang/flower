@@ -37,3 +37,6 @@ npm-debug.log*
 # 관리자 업로드 이미지
 public/uploads/*
 !public/uploads/.gitkeep
+
+# AI 이미지 변형 후보 (선택용 임시본 — 대표 이미지만 커밋)
+public/img/variants/
