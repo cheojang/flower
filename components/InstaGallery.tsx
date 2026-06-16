@@ -3,7 +3,7 @@ import { site } from "@/lib/config";
 import Reveal from "./Reveal";
 
 // 인스타 감성 갤러리 (피드 느낌의 정사각 그리드)
-const photos = Array.from({ length: 8 }, (_, i) => `/img/gallery-${i + 1}.svg`);
+const photos = Array.from({ length: 8 }, (_, i) => `/img/gallery-${i + 1}.jpg`);
 
 export default function InstaGallery() {
   return (

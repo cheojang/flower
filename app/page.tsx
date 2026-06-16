@@ -131,7 +131,7 @@ export default async function HomePage({
             </div>
             <div className="relative aspect-[5/4] overflow-hidden rounded-3xl shadow-soft">
               <Image
-                src="/img/banner-sub.svg"
+                src="/img/banner-sub.jpg"
                 alt="플라워 클래스"
                 fill
                 sizes="(max-width: 1024px) 100vw, 50vw"

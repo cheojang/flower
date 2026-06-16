@@ -40,13 +40,29 @@ type Spec = {
   kind: "brand" | "product";
 };
 
-// 실제 한국 온라인 꽃집의 상품 사진 톤을 참고하되, 어떤 글자도 들어가지 않게 강하게 명시.
+// 실제 한국 온라인 꽃집의 상품 사진 톤을 참고하되, 어떤 글자/카드/라벨/사람도 들어가지 않게 강하게 명시.
 const STYLE =
   "professional product photography in the style of a Korean online flower shop listing, " +
   "natural soft daylight, shallow depth of field, fresh real flowers, elegant pastel and cream tones, " +
-  "clean minimal studio background, high resolution, photorealistic. " +
-  "ABSOLUTELY NO text, no letters, no Korean characters, no calligraphy, no printed ribbons or banners with writing, " +
-  "no signage, no labels, no watermark, no logo. Plain unmarked ribbons only.";
+  "clean minimal studio background, ultra high resolution, sharp focus, photorealistic. " +
+  "ABSOLUTELY NO text of any kind, no letters, no words, no numbers, no Korean characters, no calligraphy, " +
+  "no paper card, no message card, no greeting card, no note card, no label, no tag, no price tag, " +
+  "no printed ribbon, no ribbon with writing, no signboard, no message board, no banner, no signage, " +
+  "no watermark, no logo, and no people, no hands, no fingers.";
+
+// 모든 상품 사진의 배경을 동일하게 통일 (색·패턴 일관) — 쇼핑몰 카드 톤 정렬용
+const BACKGROUND =
+  "Shot against one consistent identical background for all photos: a plain seamless soft warm ivory " +
+  "studio backdrop (very light warm grey-cream, hex around #F3EFEA), smooth and uniform with no pattern, " +
+  "even soft studio lighting, a subtle soft shadow under the subject, centered composition.";
+
+// 텍스트/카드/사람 제거용 네거티브 프롬프트 (Imagen이 강하게 회피)
+const NEGATIVE =
+  "text, letters, words, numbers, typography, caption, handwriting, calligraphy, " +
+  "card, paper card, message card, greeting card, note card, label, sticker, tag, price tag, " +
+  "printed ribbon, ribbon with text, ribbon, sash, paper sash, fan-shaped sash, vertical banner, bow, ribbon bow, " +
+  "sign, signboard, message board, banner, poster, watermark, logo, stamp, " +
+  "person, people, human, hand, hands, fingers, arm, blurry, low quality, distorted";
 
 const SPECS: Spec[] = [
   // ── 브랜드 이미지 ──────────────────────────────
@@ -64,8 +80,8 @@ const SPECS: Spec[] = [
     aspectRatio: "4:3",
     kind: "brand",
     prompt:
-      "A florist's hands arranging a pastel bouquet on a wooden table in a bright flower workshop, " +
-      "one-day flower class mood, calm and inviting. " +
+      "A bright flower workshop scene with pastel bouquets, ribbon spools, scissors and fresh flowers " +
+      "arranged on a wooden table for a one-day flower class, no people. " +
       STYLE,
   },
   {
@@ -117,7 +133,7 @@ const SPECS: Spec[] = [
     file: "gallery-7",
     aspectRatio: "1:1",
     kind: "brand",
-    prompt: "A florist tying a ribbon on a fresh bouquet, hands in frame, workshop scene. " + STYLE,
+    prompt: "A freshly wrapped pastel bouquet resting on a wooden workshop table, no people. " + STYLE,
   },
   {
     file: "gallery-8",
@@ -142,13 +158,18 @@ const SPECS: Spec[] = [
     file: "product-3",
     aspectRatio: "1:1",
     kind: "product",
-    prompt: "A cozy seasonal flower basket, abundant like a little tabletop garden. " + STYLE,
+    prompt:
+      "A lush pastel flower arrangement overflowing from a plain woven wicker basket, like a little abundant tabletop garden. " +
+      STYLE,
   },
   {
     file: "product-4",
     aspectRatio: "1:1",
     kind: "product",
-    prompt: "A bright cheerful thank-you flower basket, warm and celebratory. " + STYLE,
+    prompt:
+      "A bright cheerful pastel flower arrangement in a plain woven basket, warm and celebratory, " +
+      "with no ribbon, no bow, no card, no tag, no sign. " +
+      STYLE,
   },
   {
     file: "product-5",
@@ -161,8 +182,9 @@ const SPECS: Spec[] = [
     aspectRatio: "3:4",
     kind: "product",
     prompt:
-      "A tall three-tier Korean congratulatory opening flower wreath stand fully covered with bright colorful fresh flowers, " +
-      "with plain blank white sash ribbons that have absolutely no writing on them, studio product shot on a clean white background. " +
+      "A tall slender tiered flower tower arrangement for a grand opening celebration, several round tiers of colorful roses, lilies, " +
+      "carnations and chrysanthemums with green fan-shaped leaves, mounted on a thin metal tripod stand, flowers only. " +
+      "Studio product shot on a clean white background. " +
       STYLE,
   },
   {
@@ -170,8 +192,8 @@ const SPECS: Spec[] = [
     aspectRatio: "3:4",
     kind: "product",
     prompt:
-      "A solemn dignified white Korean funeral condolence flower wreath stand made of white chrysanthemums, " +
-      "with plain blank white sash ribbons that have absolutely no writing on them, studio product shot on a clean white background. " +
+      "A solemn dignified round Korean funeral condolence flower wreath made only of white chrysanthemums and green leaves on a metal stand, " +
+      "with absolutely no sash ribbons and no message board, studio product shot on a clean white background. " +
       STYLE,
   },
   {
@@ -194,7 +216,8 @@ const BRAND_REF_FILES = [
 
 const PROJECT = process.env.GCP_PROJECT_ID;
 const LOCATION = process.env.GCP_LOCATION || "us-central1";
-const MODEL = process.env.IMAGEN_MODEL || "imagen-3.0-generate-002";
+const MODEL = process.env.IMAGEN_MODEL || "imagen-4.0-generate-001";
+const IMAGE_SIZE = process.env.IMAGEN_SIZE || "2K"; // 1K | 2K (Imagen 생성 최대 2K=2048px)
 const IMG_DIR = path.join(process.cwd(), "public", "img");
 
 const args = process.argv.slice(2);
@@ -208,6 +231,9 @@ const onlyArg = args.find((a) => a.startsWith("--only="))?.split("=")[1] as
   | "brand"
   | "product"
   | undefined;
+// 특정 파일명만 생성 (쉼표구분, 부분일치). 예: --match=product-1,product-7
+const matchArg = args.find((a) => a.startsWith("--match="))?.split("=")[1];
+const matchList = matchArg ? matchArg.split(",").map((s) => s.trim()).filter(Boolean) : null;
 
 async function getAccessToken(): Promise<string> {
   const auth = new GoogleAuth({
@@ -224,14 +250,24 @@ async function generateOne(spec: Spec, token: string): Promise<Buffer> {
     `https://${LOCATION}-aiplatform.googleapis.com/v1/projects/${PROJECT}` +
     `/locations/${LOCATION}/publishers/google/models/${MODEL}:predict`;
 
+  // 상품 사진은 동일 배경(BACKGROUND) + 장식/글자 제거 문구를 덧붙여 톤 통일·텍스트 억제
+  const CLEAN =
+    "Only fresh flowers and green leaves, simply presented, with no ribbon, no bow, no sash, " +
+    "no card, no message card, no label, no tag, and no text or letters anywhere in the image.";
+  const promptText =
+    spec.kind === "product" ? `${spec.prompt} ${CLEAN} ${BACKGROUND}` : spec.prompt;
+
   const body = {
-    instances: [{ prompt: spec.prompt }],
+    instances: [{ prompt: promptText }],
     parameters: {
       sampleCount: 1,
       aspectRatio: spec.aspectRatio,
-      outputOptions: { mimeType: "image/jpeg", compressionQuality: 82 },
-      // 사람 얼굴 생성 최소화 (꽃 위주)
-      personGeneration: "dont_allow",
+      sampleImageSize: IMAGE_SIZE, // 2K = 2048px (최고 화질)
+      negativePrompt: NEGATIVE, // 글자·카드·라벨·사람 강하게 배제
+      outputOptions: { mimeType: "image/jpeg", compressionQuality: 88 },
+      // dont_allow 는 꽃 사진도 과민 차단하는 경우가 있어 allow_adult 사용.
+      // 사람/손 배제는 negativePrompt 로 처리.
+      personGeneration: process.env.IMAGEN_PERSON || "allow_adult",
       addWatermark: false,
     },
   };
@@ -339,7 +375,11 @@ async function patchDb(generated: Set<string>) {
 }
 
 async function main() {
-  const specs = SPECS.filter((s) => !onlyArg || s.kind === onlyArg);
+  const specs = SPECS.filter(
+    (s) =>
+      (!onlyArg || s.kind === onlyArg) &&
+      (!matchList || matchList.some((m) => s.file.includes(m)))
+  );
 
   console.log(`\n🌷 AI 이미지 생성 — 모델 ${MODEL} / ${LOCATION}`);
   console.log(`   대상 ${specs.length}장 (${DRY ? "DRY RUN" : "실제 생성"})\n`);
