@@ -3,6 +3,9 @@ import { prisma } from "@/lib/db";
 import { isAdminAuthenticated } from "@/lib/admin-auth";
 
 export async function GET() {
+  if (!isAdminAuthenticated()) {
+    return NextResponse.json({ error: "인증이 필요합니다." }, { status: 401 });
+  }
   const categories = await prisma.category.findMany({
     orderBy: { order: "asc" },
     include: { _count: { select: { products: true } } },

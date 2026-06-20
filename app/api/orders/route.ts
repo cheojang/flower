@@ -50,6 +50,22 @@ export async function POST(req: Request) {
     return NextResponse.json({ error: "희망 일시가 올바르지 않습니다." }, { status: 400 });
   }
 
+  // 허니팟(봇 차단): 화면에 없는 숨김 필드가 채워져 있으면 봇으로 간주
+  if (typeof body.company === "string" && body.company.trim() !== "") {
+    return NextResponse.json({ orderNo: "L000000-000" }, { status: 201 }); // 조용히 무시
+  }
+
+  // 간단한 스팸 방지: 같은 연락처로 최근 60초 내 3건 이상이면 차단
+  const recent = await prisma.order.count({
+    where: { phone: phone.trim(), createdAt: { gte: new Date(Date.now() - 60_000) } },
+  });
+  if (recent >= 3) {
+    return NextResponse.json(
+      { error: "잠시 후 다시 시도해 주세요. (짧은 시간에 너무 많은 주문)" },
+      { status: 429 }
+    );
+  }
+
   // 가격은 클라이언트 값을 믿지 않고 DB에서 스냅샷
   const product = await prisma.product.findUnique({ where: { id: productId } });
   if (!product) {
@@ -79,7 +95,10 @@ export async function POST(req: Request) {
           userId,
         },
       });
-      return NextResponse.json({ orderNo: order.orderNo }, { status: 201 });
+      return NextResponse.json(
+        { orderNo: order.orderNo, token: order.accessToken },
+        { status: 201 }
+      );
     } catch (e: unknown) {
       const isUniqueConflict =
         typeof e === "object" && e !== null && (e as { code?: string }).code === "P2002";

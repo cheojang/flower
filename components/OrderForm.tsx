@@ -21,6 +21,7 @@ export default function OrderForm({ productId, productName, price }: Props) {
   const [address, setAddress] = useState("");
   const [cardMessage, setCardMessage] = useState("");
   const [request, setRequest] = useState("");
+  const [company, setCompany] = useState(""); // 허니팟(봇 차단용 — 사람은 비워둠)
   const [submitting, setSubmitting] = useState(false);
   const [error, setError] = useState("");
 
@@ -59,6 +60,7 @@ export default function OrderForm({ productId, productName, price }: Props) {
           address,
           cardMessage,
           request,
+          company,
         }),
       });
       const data = await res.json();
@@ -67,7 +69,7 @@ export default function OrderForm({ productId, productName, price }: Props) {
         setSubmitting(false);
         return;
       }
-      router.push(`/order/complete/${data.orderNo}`);
+      router.push(`/order/complete/${data.token}`);
     } catch {
       setError("네트워크 오류가 발생했어요. 잠시 후 다시 시도해 주세요.");
       setSubmitting(false);
@@ -80,6 +82,17 @@ export default function OrderForm({ productId, productName, price }: Props) {
 
   return (
     <form onSubmit={submit} className="flex flex-col gap-5">
+      {/* 허니팟: 사람에겐 안 보이고 봇만 채움 (채워지면 서버가 무시) */}
+      <input
+        type="text"
+        name="company"
+        tabIndex={-1}
+        autoComplete="off"
+        value={company}
+        onChange={(e) => setCompany(e.target.value)}
+        className="absolute left-[-9999px] h-0 w-0 opacity-0"
+        aria-hidden="true"
+      />
       {/* 수량 */}
       <div>
         <label className={labelCls}>수량</label>

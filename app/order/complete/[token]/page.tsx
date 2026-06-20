@@ -14,10 +14,11 @@ const RECEIVE_LABEL: Record<string, string> = {
 export default async function OrderCompletePage({
   params,
 }: {
-  params: { orderNo: string };
+  params: { token: string };
 }) {
+  // 추측 불가능한 토큰으로만 조회 (주문번호 열거를 통한 정보 노출 방지)
   const order = await prisma.order.findUnique({
-    where: { orderNo: params.orderNo },
+    where: { accessToken: params.token },
   });
   if (!order) notFound();
 

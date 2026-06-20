@@ -41,6 +41,7 @@ model Product {
 model Order {
   id           String   @id @default(cuid())
   orderNo      String   @unique // 예: L250612-001 (날짜+순번)
+  accessToken  String?  @unique @default(cuid()) // 주문조회 URL용 추측 불가 토큰
   productName  String // 주문 시점 상품명 스냅샷 (상품 삭제돼도 보존)
   price        Int // 주문 시점 단가 스냅샷
   quantity     Int      @default(1)
